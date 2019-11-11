@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -46,6 +48,10 @@ dependencies {
 
     // used by Spotify and Retrofit to convert between Java Objs and JSON
     implementation "com.google.code.gson:gson:2.8.5"
+
+    // image loading library
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    kapt 'com.github.bumptech.glide:compiler:4.10.0'
 
 
 }

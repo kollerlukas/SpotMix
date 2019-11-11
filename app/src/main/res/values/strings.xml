@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SpotMix</string>
+
+    <string name="create_party">Create Party</string>
+    <string name="join_party">Join Party</string>
+    <string name="spotify_sign_in">Spotify sign in</string>
 </resources>
