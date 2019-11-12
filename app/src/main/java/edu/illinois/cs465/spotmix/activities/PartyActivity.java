@@ -1,5 +1,6 @@
 package edu.illinois.cs465.spotmix.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,8 +75,11 @@ public class PartyActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.attendees:
-                // TODO: implement
-                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                Intent attendeeIntent = new Intent(this, AttendeesActivity.class);
+                // pass party instance to attendee activity
+                attendeeIntent.putExtra(Party.PARCEL_KEY, party);
+                // start Attendee Activity
+                startActivity(attendeeIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

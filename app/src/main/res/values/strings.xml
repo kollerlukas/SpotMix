@@ -11,4 +11,9 @@
     <string name="close_party">Close Party</string>
     <string name="leave_party">Leave Party</string>
     <string name="attendees">Attendees</string>
+
+    <string name="search">Search</string>
+    <string name="search_attendee">Search Attendee</string>
+
+    <string name="party">Party</string>
 </resources>

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="edu.illinois.cs465.spotmix">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +21,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.CreatePartyActivity" />
+        <activity
+            android:name=".activities.CreatePartyActivity"
+            android:label="@string/create_party"
+            android:parentActivityName=".activities.MainActivity" />
 
-        <activity android:name=".activities.JoinPartyActivity" />
+        <activity
+            android:name=".activities.JoinPartyActivity"
+            android:label="@string/join_party"
+            android:parentActivityName=".activities.MainActivity" />
 
-        <activity android:name=".activities.PartyActivity" />
+        <activity
+            android:name=".activities.PartyActivity"
+            android:label="@string/party" />
+
+        <activity
+            android:name=".activities.AttendeesActivity"
+            android:label="@string/attendees"
+            android:parentActivityName=".activities.PartyActivity" />
 
         <!-- Needed for Spotify Auth Api -->
         <activity

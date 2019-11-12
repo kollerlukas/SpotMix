@@ -33,8 +33,23 @@ class FirebaseHelper {
         fun onJoined(party: Party?, attendee: Attendee?)
     }
 
+    /**
+     * Interface for receiving changes to a party.
+     * */
+    interface PartyListener {
+
+        /**
+         * Called if there was a change in the party.
+         * */
+        fun onChange(party: Party)
+    }
+
     // handle to Firebase Database
     private var database = FirebaseDatabase.getInstance().reference
+    // reference to ValueEventListener to maybe remove it later
+    private var valueEventListener: ValueEventListener? = null
+    // all subscribed party listeners
+    private var partyListeners: MutableList<PartyListener> = mutableListOf()
 
     /**
      * Create a new party instance. Automatically handles creates a unique and writing to Firebase.
@@ -114,5 +129,38 @@ class FirebaseHelper {
         // update firebase
         // TODO: update value instead of setting it
         partyDb.child("attendees").setValue(party.attendees)
+    }
+
+    /**
+     * TODO
+     * */
+    fun addPartyListener(party: Party, listener: PartyListener) {
+        if (valueEventListener == null) {
+            valueEventListener = object : ValueEventListener {
+                override fun onCancelled(dataSnapshot: DatabaseError) {
+                    // nothing
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // get party instance
+                    val party = dataSnapshot.getValue(Party::class.java)!!
+                    // notfiy all subcribers
+                    partyListeners.forEach { it.onChange(party) }
+                }
+            }
+            database.child(party.key!!).addValueEventListener(valueEventListener!!)
+        }
+        partyListeners.add(listener)
+    }
+
+    /**
+     * TODO
+     * */
+    fun removePartyListener(party: Party, listener: PartyListener) {
+        partyListeners.remove(listener)
+        if (partyListeners.isEmpty()) {
+            database.child(party.key!!).removeEventListener(valueEventListener!!)
+            valueEventListener = null
+        }
     }
 }
