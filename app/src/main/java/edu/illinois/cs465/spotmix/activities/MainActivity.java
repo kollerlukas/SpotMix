@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,12 +43,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.join_party_btn:
-                // TODO
-                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                // start Join Activity
+                startActivity(new Intent(this, JoinPartyActivity.class));
                 break;
             case R.id.create_party_btn:
-                // TODO
-                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                // construct explicit intent
+                Intent createPartyIntent = new Intent(this, CreatePartyActivity.class);
+                // put SpotifyHelper as Parcelable extra
+                createPartyIntent.putExtra(SpotifyHelper.PARCEL_KEY, helper);
+                // start Create party activity
+                startActivity(createPartyIntent);
                 break;
             default:
                 break;

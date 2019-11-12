@@ -1,10 +1,8 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import edu.illinois.cs465.spotmix.api.spotify.models.Album
-import edu.illinois.cs465.spotmix.api.spotify.models.Artists
-import edu.illinois.cs465.spotmix.api.spotify.models.ExternalIds
-import edu.illinois.cs465.spotmix.api.spotify.models.ExternalUrls
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -17,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class Track(
 
     @SerializedName("album") val album: Album,
@@ -37,4 +35,42 @@ data class Track(
     @SerializedName("track_number") val track_number: Int,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-)
+) : Parcelable {
+
+    companion object {
+        /**
+         * Null track used, when no track is available.
+         * */
+        val null_track = Track(
+            Album(
+                "",
+                emptyList(),
+                emptyList(),
+                ExternalUrls(""),
+                "",
+                "",
+                emptyList(),
+                "",
+                "",
+                "",
+                -1, "", ""
+            ),
+            emptyList(),
+            emptyList(),
+            -1,
+            -1,
+            false,
+            ExternalIds(""),
+            ExternalUrls(""),
+            "",
+            "",
+            false,
+            "",
+            -1,
+            "",
+            -1,
+            "",
+            ""
+        )
+    }
+}

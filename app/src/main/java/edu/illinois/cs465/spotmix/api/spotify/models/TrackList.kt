@@ -1,7 +1,9 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import edu.illinois.cs465.spotmix.api.spotify.models.Track
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -14,9 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class TrackList(
-
     @SerializedName("href") val href: String,
     @SerializedName("items") val items: List<Track>,
     @SerializedName("limit") val limit: Int,
@@ -24,4 +25,4 @@ data class TrackList(
     @SerializedName("offset") val offset: Int,
     @SerializedName("previous") val previous: String,
     @SerializedName("total") val total: Int
-)
+) : Parcelable

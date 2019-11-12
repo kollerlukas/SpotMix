@@ -1,6 +1,8 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -13,9 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class Album(
-
     @SerializedName("album_type") val album_type: String,
     @SerializedName("artists") val artists: List<Artists>,
     @SerializedName("available_markets") val available_markets: List<String>,
@@ -29,4 +30,4 @@ data class Album(
     @SerializedName("total_tracks") val total_tracks: Int,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-)
+) : Parcelable

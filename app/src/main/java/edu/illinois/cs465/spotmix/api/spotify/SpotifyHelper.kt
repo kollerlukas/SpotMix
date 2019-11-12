@@ -3,6 +3,7 @@
 package edu.illinois.cs465.spotmix.api.spotify
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -12,6 +13,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.Subscription
 import com.spotify.protocol.types.PlayerState
 import edu.illinois.cs465.spotmix.api.spotify.models.User
+import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,13 +26,16 @@ import retrofit2.converter.gson.GsonConverterFactory
  * The Spotify App Remote is needed to handle the music playback
  * @param accessToken token to access Spotify Auth Api
  * */
-class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<PlayerState> {
+@Parcelize
+class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<PlayerState>, Parcelable {
 
     interface UserCallback {
         fun onUser(user: User)
     }
 
     companion object {
+
+        const val PARCEL_KEY = "api.spotify.SpotifyHelper.PARCEL_KEY"
 
         // Spotify client id from the Spotify console
         internal const val CLIENT_ID = "c89a81730c724897b3ad7bc91a49c9ee"
@@ -50,9 +55,11 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
     }
 
     // handle to the Spotify App Remote
+    @Suppress("PLUGIN_WARNING")
     private var spotifyAppRemote: SpotifyAppRemote? = null
 
     // handle for the Spotify Api
+    @Suppress("PLUGIN_WARNING")
     private val service: SpotifyService
 
     init {

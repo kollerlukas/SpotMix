@@ -1,6 +1,8 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -13,13 +15,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class Artists(
-
     @SerializedName("external_urls") val external_urls: ExternalUrls,
     @SerializedName("href") val href: String,
     @SerializedName("id") val id: String,
     @SerializedName("name") val name: String,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-)
+) : Parcelable

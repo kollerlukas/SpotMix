@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "630547545266",
+    "firebase_url": "https://spotmix-9ea0d.firebaseio.com",
+    "project_id": "spotmix-9ea0d",
+    "storage_bucket": "spotmix-9ea0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630547545266:android:cf9aa9956a123162231dab",
+        "android_client_info": {
+          "package_name": "edu.illinois.cs465.spotmix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630547545266-6tq1gbug9o70n7d5ihv0lheuv6vral8n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.illinois.cs465.spotmix",
+            "certificate_hash": "cc4a106ba0610bde0888561ac9522d151b0e69dc"
+          }
+        },
+        {
+          "client_id": "630547545266-vl401c764bgtb3amnmihol3qqmgkr98n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYo2DGR0QEkcAxhvEEsUdLkMnpBCNKPrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630547545266-vl401c764bgtb3amnmihol3qqmgkr98n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

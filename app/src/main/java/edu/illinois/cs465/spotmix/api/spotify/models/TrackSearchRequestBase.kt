@@ -1,7 +1,9 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackList
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -14,8 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class TrackSearchRequestBase(
-
     @SerializedName("tracks") val trackList: TrackList
-)
+) : Parcelable

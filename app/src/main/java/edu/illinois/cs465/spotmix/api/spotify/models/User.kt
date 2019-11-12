@@ -1,8 +1,10 @@
 package edu.illinois.cs465.spotmix.api.spotify.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import edu.illinois.cs465.spotmix.api.spotify.models.ExternalUrls
 import edu.illinois.cs465.spotmix.api.spotify.models.Followers
+import kotlinx.android.parcel.Parcelize
 
 /*
 Copyright (c) 2019 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -15,9 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Parcelize
 data class User(
-
     @SerializedName("display_name") val display_name: String,
     @SerializedName("email") val email: String,
     @SerializedName("external_urls") val external_urls: ExternalUrls,
@@ -27,4 +28,4 @@ data class User(
     @SerializedName("images") val images: List<String>,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-)
+) : Parcelable
