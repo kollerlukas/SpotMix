@@ -16,4 +16,6 @@
     <string name="search_attendee">Search Attendee</string>
 
     <string name="party">Party</string>
+
+    <string name="admin">Admin</string>
 </resources>

@@ -1,6 +1,7 @@
 package edu.illinois.cs465.spotmix.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.ChildEventListener;
-
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.illinois.cs465.spotmix.R;
@@ -26,7 +26,7 @@ import edu.illinois.cs465.spotmix.api.firebase.models.Attendee;
 import edu.illinois.cs465.spotmix.api.firebase.models.Party;
 
 public class AttendeesActivity extends AppCompatActivity
-        implements View.OnClickListener, FirebaseHelper.PartyListener {
+        implements View.OnClickListener, FirebaseHelper.AttendeeListener {
 
     // instance of a party to display attendees
     private Party party;
@@ -46,8 +46,14 @@ public class AttendeesActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // extract party instance from intent
-        party = getIntent().getParcelableExtra(Party.PARCEL_KEY);
+        if (savedInstanceState != null) {
+            // retsore state
+            party = savedInstanceState.getParcelable(Party.PARCEL_KEY);
+        } else {
+            // extract party instance from intent
+            party = getIntent().getParcelableExtra(Party.PARCEL_KEY);
+        }
+
 
         if (party == null) {
             // TODO: error handling
@@ -61,23 +67,33 @@ public class AttendeesActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         // set a LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // set an Adapter
-        rvAdapter = new AttendeeAdapter(party.getAttendees());
+        // set an Adapter; start with empty list
+        rvAdapter = new AttendeeAdapter(new LinkedList<Attendee>());
         recyclerView.setAdapter(rvAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // register party listener
-        firebaseHelper.addPartyListener(party, this);
+        // clear attendees list
+        rvAdapter.setAttendees(new LinkedList<Attendee>());
+        rvAdapter.notifyDataSetChanged();
+        // register attendee listener
+        firebaseHelper.addAttendeeListener(party, this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // unregister party listener
-        firebaseHelper.removePartyListener(party, this);
+        // unregister attendee listener
+        firebaseHelper.removeAttendeeListener(party, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save state
+        outState.putParcelable(Party.PARCEL_KEY, party);
     }
 
     @Override
@@ -94,11 +110,30 @@ public class AttendeesActivity extends AppCompatActivity
     }
 
     @Override
-    public void onChange(@NotNull Party party) {
-        this.party = party;
-        // set new attendees
-        rvAdapter.setAttendees(party.getAttendees());
-        // show update
+    public void onAdded(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onAdded() called with: attendees = [" + attendees + "], position = [" + position + "]");
+        rvAdapter.setAttendees(attendees);
+        rvAdapter.notifyItemInserted(position);
+    }
+
+    @Override
+    public void onRemoved(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onRemoved() called with: attendees = [" + attendees + "], position = [" + position + "]");
+        rvAdapter.setAttendees(attendees);
+        rvAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onChanged(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onChanged() called with: attendees = [" + attendees + "], position = [" + position + "]");
+        rvAdapter.setAttendees(attendees);
+        rvAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void listChanged(@NotNull List<Attendee> attendees) {
+        Log.d("AttendeeActivity", "listChanged() called with: attendees = [" + attendees + "]");
+        rvAdapter.setAttendees(attendees);
         rvAdapter.notifyDataSetChanged();
     }
 
@@ -110,7 +145,7 @@ public class AttendeesActivity extends AppCompatActivity
             this.attendees = attendees;
         }
 
-        public void setAttendees(List<Attendee> attendees) {
+        void setAttendees(List<Attendee> attendees) {
             this.attendees = attendees;
         }
 
@@ -146,6 +181,9 @@ public class AttendeesActivity extends AppCompatActivity
                 TextView nameTv = itemView.findViewById(R.id.attendee_name);
                 // set attendee name as text
                 nameTv.setText(attendee.getName());
+
+                itemView.findViewById(R.id.admin_indicator)
+                        .setVisibility(attendee.getAdmin() ? View.VISIBLE : View.GONE);
             }
         }
     }

@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--TODO: make look nice-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/attendee_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/admin_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/admin"
+        android:visibility="gone" />
 
 </LinearLayout>

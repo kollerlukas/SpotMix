@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import edu.illinois.cs465.spotmix.R;
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper;
 import edu.illinois.cs465.spotmix.api.firebase.models.Attendee;
 import edu.illinois.cs465.spotmix.api.firebase.models.Party;
 import edu.illinois.cs465.spotmix.api.spotify.SpotifyHelper;
 
-public class PartyActivity extends AppCompatActivity {
+public class PartyActivity extends AppCompatActivity implements FirebaseHelper.PartyListener {
 
     // instance of a party to display
     private Party party;
@@ -33,10 +35,17 @@ public class PartyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party);
 
-        // extract party instance from intent
-        party = getIntent().getParcelableExtra(Party.PARCEL_KEY);
-        // extract attendee instance
-        attendee = getIntent().getParcelableExtra(Attendee.PARCEL_KEY);
+        if (savedInstanceState != null) {
+            // retsore state
+            party = savedInstanceState.getParcelable(Party.PARCEL_KEY);
+            attendee = savedInstanceState.getParcelable(Attendee.PARCEL_KEY);
+        } else {
+            // extract party instance from intent
+            party = getIntent().getParcelableExtra(Party.PARCEL_KEY);
+            // extract attendee instance
+            attendee = getIntent().getParcelableExtra(Attendee.PARCEL_KEY);
+        }
+
 
         if (party == null || attendee == null) {
             // TODO: error handling
@@ -58,6 +67,31 @@ public class PartyActivity extends AppCompatActivity {
         menu.findItem(R.id.close_party).setVisible(attendee.getAdmin());
         menu.findItem(R.id.leave_party).setVisible(!attendee.getAdmin());
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseHelper.addPartyListener(party, this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseHelper.removePartyListener(party, this);
+    }
+
+    @Override
+    public void onChange(@NotNull Party party) {
+        this.party = party;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save party and attendee
+        outState.putParcelable(Party.PARCEL_KEY, party);
+        outState.putParcelable(Attendee.PARCEL_KEY, attendee);
     }
 
     @Override
