@@ -19,4 +19,9 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 data class Followers(
     @SerializedName("href") val href: String,
     @SerializedName("total") val total: Int
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this("", -1)
+}

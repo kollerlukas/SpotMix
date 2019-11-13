@@ -30,4 +30,23 @@ data class Album(
     @SerializedName("total_tracks") val total_tracks: Int,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(
+        "",
+        mutableListOf(),
+        mutableListOf(),
+        ExternalUrls(),
+        "",
+        "",
+        mutableListOf(),
+        "",
+        "",
+        "",
+        -1,
+        "",
+        ""
+    )
+}

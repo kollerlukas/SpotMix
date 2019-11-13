@@ -65,8 +65,8 @@ public class CreatePartyActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCreated(@org.jetbrains.annotations.Nullable Party party,
-                          @org.jetbrains.annotations.Nullable Attendee attendee) {
+    public void onPartyCreated(@org.jetbrains.annotations.Nullable Party party,
+                               @org.jetbrains.annotations.Nullable Attendee attendee) {
         if (party != null && attendee != null) {
             // construct explicit intent
             Intent intent = new Intent(this, PartyActivity.class);

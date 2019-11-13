@@ -1,9 +1,10 @@
 package edu.illinois.cs465.spotmix.api.firebase
 
-import android.util.Log
 import com.google.firebase.database.*
 import edu.illinois.cs465.spotmix.api.firebase.models.Attendee
 import edu.illinois.cs465.spotmix.api.firebase.models.Party
+import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack
+import edu.illinois.cs465.spotmix.api.spotify.models.Track
 import edu.illinois.cs465.spotmix.api.spotify.models.User
 
 /**
@@ -21,7 +22,7 @@ class FirebaseHelper {
          * @param party
          * @param attendee
          * */
-        fun onCreated(party: Party?, attendee: Attendee?)
+        fun onPartyCreated(party: Party?, attendee: Attendee?)
     }
 
     /**
@@ -35,7 +36,7 @@ class FirebaseHelper {
          * @param party
          * @param attendee
          * */
-        fun onJoined(party: Party?, attendee: Attendee?)
+        fun onPartyJoined(party: Party?, attendee: Attendee?)
     }
 
     /**
@@ -47,7 +48,7 @@ class FirebaseHelper {
          * Called if there was a change in the party.
          * @param party
          * */
-        fun onChange(party: Party)
+        fun onPartyChanged(party: Party)
     }
 
     /**
@@ -60,27 +61,39 @@ class FirebaseHelper {
          * @param attendees
          * @param position
          * */
-        fun onAdded(attendees: List<Attendee>, position: Int)
+        fun onAttendeeAdded(attendees: List<Attendee>, position: Int)
 
         /**
          * Called when attendee was removed from the party.
          * @param attendees
          * @param position
          * */
-        fun onRemoved(attendees: List<Attendee>, position: Int)
+        fun onAttendeeRemoved(attendees: List<Attendee>, position: Int)
 
         /**
          * Called when attendee state changed, e.g. becoming an admin.
          * @param attendees
          * @param position
          * */
-        fun onChanged(attendees: List<Attendee>, position: Int)
+        fun onAttendeeChanged(attendees: List<Attendee>, position: Int)
 
         /**
          * Called when whole list changed.
          * @param attendees
          * */
-        fun listChanged(attendees: List<Attendee>)
+        fun onAttendeeListChanged(attendees: List<Attendee>)
+    }
+
+    /**
+     * Callback for adding track to the queue.
+     * */
+    interface AddToQueueCallback {
+
+        /**
+         * Called when track was added to the queue.
+         * @param track; null in case of an error
+         * */
+        fun onAddedTrackToQueue(track: QueueTrack?)
     }
 
     // handle to Firebase Database
@@ -117,7 +130,7 @@ class FirebaseHelper {
         // set party in party database
         partyDb.setValue(party)
         // return newly created party
-        callback.onCreated(party, attendee)
+        callback.onPartyCreated(party, attendee)
     }
 
     /**
@@ -131,7 +144,7 @@ class FirebaseHelper {
         // read party data from firebase
         partyDb.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
-                callback.onJoined(null, null)
+                callback.onPartyJoined(null, null)
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -146,7 +159,7 @@ class FirebaseHelper {
                 // TODO: update value instead of setting it
                 partyDb.child("attendees").setValue(party?.attendees)
                 // return to callback
-                callback.onJoined(party, attendee)
+                callback.onPartyJoined(party, attendee)
             }
         })
     }
@@ -156,9 +169,9 @@ class FirebaseHelper {
      * @param party
      * */
     fun closeParty(party: Party) {
-        // get party instance from firebase
+        // get party instance from Firebase
         val partyDb = database.child(party.key!!)
-        // delete party from firebase
+        // delete party from Firebase
         partyDb.removeValue()
     }
 
@@ -169,7 +182,7 @@ class FirebaseHelper {
      * */
     fun removeAttendee(party: Party, attendee: Attendee) {
         party.attendees.remove(attendee)
-        // get party instance from firebase
+        // get party instance from Firebase
         val partyDb = database.child(party.key!!)
         // update firebase
         // TODO: update value instead of setting it
@@ -177,7 +190,54 @@ class FirebaseHelper {
     }
 
     /**
-     * TODO
+     * Add a Spotify track to the current queue of the party.
+     * @param party
+     * @param track
+     * */
+    fun addTrackToQueue(party: Party, track: Track, callback: AddToQueueCallback) {
+        // add track to queue
+        val queueTrack = QueueTrack(track)
+        party.queue.add(queueTrack)
+        // get party instance from Firebase
+        val partyDb = database.child(party.key!!)
+        // update queue
+        partyDb.child("queue").setValue(party.queue)
+            .addOnSuccessListener { callback.onAddedTrackToQueue(queueTrack) }
+            .addOnFailureListener { callback.onAddedTrackToQueue(null) }
+    }
+
+    /**
+     * Upvote a track from the current party queue.
+     * @param party
+     * @param track
+     * @param attendee the attendee voting on the track
+     * */
+    fun upvoteTrack(party: Party, track: QueueTrack, attendee: Attendee) {
+        // upvote the track
+        track.upvotes.add(attendee)
+        // get party instance from Firebase
+        val partyDb = database.child(party.key!!)
+        // update queue
+        partyDb.child("queue").setValue(party.queue)
+    }
+
+    /**
+     * Downvote a track from the current party queue.
+     * @param party
+     * @param track
+     * @param attendee the attendee voting on the track
+     * */
+    fun downvoteTrack(party: Party, track: QueueTrack, attendee: Attendee) {
+        // downvote the track
+        track.downvotes.add(attendee)
+        // get party instance from Firebase
+        val partyDb = database.child(party.key!!)
+        // update queue
+        partyDb.child("queue").setValue(party.queue)
+    }
+
+    /**
+     * Get notified when the state of the party changes.
      * @param party
      * @param listener
      * */
@@ -192,7 +252,7 @@ class FirebaseHelper {
                     // get party instance
                     val newParty = snapshot.getValue(Party::class.java)!!
                     // notfiy all subcribers
-                    partyListeners.forEach { it.onChange(newParty) }
+                    partyListeners.forEach { it.onPartyChanged(newParty) }
                 }
             }
             database.child(party.key!!).addValueEventListener(partyValueEventListener!!)
@@ -201,7 +261,7 @@ class FirebaseHelper {
     }
 
     /**
-     * TODO
+     * Unsubscribe from receiving party change updates.
      * @param party
      * @param listener
      * */
@@ -214,7 +274,7 @@ class FirebaseHelper {
     }
 
     /**
-     * TODO
+     * Get notified when the attendees list changes.
      * @param party
      * @param listener
      * */
@@ -224,7 +284,6 @@ class FirebaseHelper {
             val attendees = mutableListOf<Attendee>()
             attendeeChildEventListener = object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    Log.d("FirebaseHelper", "onChildAdded($snapshot, $previousChildName)")
                     // retrieve position of new attendee; +1 because previousChildName is reference to element in front in the list
                     var position = previousChildName?.toInt()?.plus(1)
                     if (position == null) {
@@ -237,12 +296,11 @@ class FirebaseHelper {
                         // add new attendee
                         attendees.add(position, attendee)
                         // notify subscribers
-                        attendeeListeners.forEach { it.onAdded(attendees, position!!) }
+                        attendeeListeners.forEach { it.onAttendeeAdded(attendees, position!!) }
                     }
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                    Log.d("FirebaseHelper", "onChildRemoved($snapshot)")
                     // get attendee instance
                     val attendee = snapshot.getValue(Attendee::class.java)
                     if (attendee != null) {
@@ -250,12 +308,11 @@ class FirebaseHelper {
                         val position = attendees.indexOf(attendee)
                         attendees.remove(attendee)
                         // notify subscribers
-                        attendeeListeners.forEach { it.onRemoved(attendees, position) }
+                        attendeeListeners.forEach { it.onAttendeeRemoved(attendees, position) }
                     }
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    Log.d("FirebaseHelper", "onChildChanged($snapshot, $previousChildName)")
                     // retrieve position of changed attendee; +1 because previousChildName is reference to element in front in the list
                     var position = previousChildName?.toInt()?.plus(1)
                     if (position == null) {
@@ -268,16 +325,16 @@ class FirebaseHelper {
                         // change attendee
                         attendees[position!!] = attendee
                         // notify subscribers
-                        attendeeListeners.forEach { it.onChanged(attendees, position!!) }
+                        attendeeListeners.forEach { it.onAttendeeChanged(attendees, position!!) }
                     }
                 }
 
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                    Log.d("FirebaseHelper", "onChildMoved($snapshot, $previousChildName)")
+                    // not handled, because shouldn't happen
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.d("FirebaseHelper", "onCancelled($error)")
+                    // nothing
                 }
 
             }
@@ -290,7 +347,7 @@ class FirebaseHelper {
     }
 
     /**
-     * TODO
+     * Unsubscribe from attendee list changes.
      * @param party
      * @param listener
      * */

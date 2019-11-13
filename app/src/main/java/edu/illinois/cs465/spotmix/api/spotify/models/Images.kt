@@ -20,4 +20,9 @@ data class Images(
     @SerializedName("height") val height: Int,
     @SerializedName("url") val url: String,
     @SerializedName("width") val width: Int
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(-1, "", -1)
+}

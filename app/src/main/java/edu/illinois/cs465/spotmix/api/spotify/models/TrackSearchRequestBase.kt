@@ -2,7 +2,6 @@ package edu.illinois.cs465.spotmix.api.spotify.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import edu.illinois.cs465.spotmix.api.spotify.models.TrackList
 import kotlinx.android.parcel.Parcelize
 
 /*
@@ -19,4 +18,9 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 @Parcelize
 data class TrackSearchRequestBase(
     @SerializedName("tracks") val trackList: TrackList
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(TrackList())
+}

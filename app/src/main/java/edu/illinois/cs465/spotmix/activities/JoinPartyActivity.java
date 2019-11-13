@@ -62,8 +62,8 @@ public class JoinPartyActivity extends AppCompatActivity
     }
 
     @Override
-    public void onJoined(@org.jetbrains.annotations.Nullable Party party,
-                         @org.jetbrains.annotations.Nullable Attendee attendee) {
+    public void onPartyJoined(@org.jetbrains.annotations.Nullable Party party,
+                              @org.jetbrains.annotations.Nullable Attendee attendee) {
         if (party != null && attendee != null) {
             // start party activity with party
             Intent intent = new Intent(this, PartyActivity.class);

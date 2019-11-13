@@ -37,40 +37,30 @@ data class Track(
     @SerializedName("uri") val uri: String
 ) : Parcelable {
 
-    companion object {
-        /**
-         * Null track used, when no track is available.
-         * */
-        val null_track = Track(
-            Album(
-                "",
-                emptyList(),
-                emptyList(),
-                ExternalUrls(""),
-                "",
-                "",
-                emptyList(),
-                "",
-                "",
-                "",
-                -1, "", ""
-            ),
-            emptyList(),
-            emptyList(),
-            -1,
-            -1,
-            false,
-            ExternalIds(""),
-            ExternalUrls(""),
-            "",
-            "",
-            false,
-            "",
-            -1,
-            "",
-            -1,
-            "",
-            ""
-        )
-    }
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(
+        Album(),
+        mutableListOf(),
+        mutableListOf(),
+        -1,
+        -1,
+        false,
+        ExternalIds(),
+        ExternalUrls(),
+        "",
+        "",
+        false,
+        "",
+        -1,
+        "",
+        -1,
+        "",
+        ""
+    )
+
+    /**
+     * Helper function to easily get displayable version of artists.
+     * */
+    fun getArtistNames(): String = artists.map { it.name }.reduceRight { s, acc -> "$acc, $s" }
 }

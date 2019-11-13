@@ -18,4 +18,9 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 @Parcelize
 data class Offset(
     @SerializedName("position") val position: Int
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(-1)
+}

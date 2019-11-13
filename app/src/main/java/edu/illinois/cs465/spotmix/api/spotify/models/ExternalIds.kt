@@ -18,4 +18,9 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 @Parcelize
 data class ExternalIds(
     @SerializedName("isrc") val isrc: String
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this("")
+}

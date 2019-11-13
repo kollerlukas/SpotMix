@@ -123,29 +123,29 @@ public class AttendeesActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAdded(@NotNull List<Attendee> attendees, int position) {
-        Log.d("AttendeeActivity", "onAdded() called with: attendees = [" + attendees + "], position = [" + position + "]");
+    public void onAttendeeAdded(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onAttendeeAdded() called with: attendees = [" + attendees + "], position = [" + position + "]");
         rvAdapter.setAttendees(attendees);
         rvAdapter.notifyItemInserted(position);
     }
 
     @Override
-    public void onRemoved(@NotNull List<Attendee> attendees, int position) {
-        Log.d("AttendeeActivity", "onRemoved() called with: attendees = [" + attendees + "], position = [" + position + "]");
+    public void onAttendeeRemoved(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onAttendeeRemoved() called with: attendees = [" + attendees + "], position = [" + position + "]");
         rvAdapter.setAttendees(attendees);
         rvAdapter.notifyItemRemoved(position);
     }
 
     @Override
-    public void onChanged(@NotNull List<Attendee> attendees, int position) {
-        Log.d("AttendeeActivity", "onChanged() called with: attendees = [" + attendees + "], position = [" + position + "]");
+    public void onAttendeeChanged(@NotNull List<Attendee> attendees, int position) {
+        Log.d("AttendeeActivity", "onAttendeeChanged() called with: attendees = [" + attendees + "], position = [" + position + "]");
         rvAdapter.setAttendees(attendees);
         rvAdapter.notifyItemChanged(position);
     }
 
     @Override
-    public void listChanged(@NotNull List<Attendee> attendees) {
-        Log.d("AttendeeActivity", "listChanged() called with: attendees = [" + attendees + "]");
+    public void onAttendeeListChanged(@NotNull List<Attendee> attendees) {
+        Log.d("AttendeeActivity", "onAttendeeListChanged() called with: attendees = [" + attendees + "]");
         rvAdapter.setAttendees(attendees);
         rvAdapter.notifyDataSetChanged();
     }

@@ -2,7 +2,6 @@ package edu.illinois.cs465.spotmix.api.spotify.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import edu.illinois.cs465.spotmix.api.spotify.models.Track
 import kotlinx.android.parcel.Parcelize
 
 /*
@@ -25,4 +24,9 @@ data class TrackList(
     @SerializedName("offset") val offset: Int,
     @SerializedName("previous") val previous: String,
     @SerializedName("total") val total: Int
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this("", mutableListOf(), -1, "", -1, "", -1)
+}

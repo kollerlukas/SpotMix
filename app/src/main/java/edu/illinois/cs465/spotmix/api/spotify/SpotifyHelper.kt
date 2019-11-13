@@ -12,6 +12,7 @@ import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.Subscription
 import com.spotify.protocol.types.PlayerState
+import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackList
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackSearchRequestBase
 import edu.illinois.cs465.spotmix.api.spotify.models.User
@@ -38,9 +39,9 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
 
         /**
          * Called when search results are available.
-         * @param trackList
+         * @param trackList, null if error encountered
          * */
-        fun onSearchResults(trackList: TrackList)
+        fun onSearchResults(trackList: TrackList?)
     }
 
     companion object {
@@ -147,9 +148,7 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
                 override fun onResult(result: TrackSearchRequestBase?) {
                     super.onResult(result)
                     // notify callback
-                    if (result != null) {
-                        callback.onSearchResults(result.trackList)
-                    }
+                    callback.onSearchResults(result?.trackList)
                 }
             })
     }

@@ -16,5 +16,5 @@ data class QueueTrack @JvmOverloads constructor(
 
     // used to reconstruct obj when reading from Firebase
     @Suppress("unused")
-    constructor() : this(Track.null_track)
+    constructor() : this(Track())
 }

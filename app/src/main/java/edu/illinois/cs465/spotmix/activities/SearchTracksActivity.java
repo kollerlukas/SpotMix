@@ -1,6 +1,7 @@
 package edu.illinois.cs465.spotmix.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,13 +29,14 @@ import edu.illinois.cs465.spotmix.R;
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper;
 import edu.illinois.cs465.spotmix.api.firebase.models.Attendee;
 import edu.illinois.cs465.spotmix.api.firebase.models.Party;
+import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack;
 import edu.illinois.cs465.spotmix.api.spotify.SpotifyHelper;
-import edu.illinois.cs465.spotmix.api.spotify.models.Artist;
 import edu.illinois.cs465.spotmix.api.spotify.models.Track;
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackList;
 
 public class SearchTracksActivity extends AppCompatActivity
-        implements View.OnClickListener, SpotifyHelper.SearchTrackCallback {
+        implements View.OnClickListener, SpotifyHelper.SearchTrackCallback,
+        FirebaseHelper.PartyListener, FirebaseHelper.AddToQueueCallback {
 
     // instance of a party to display
     private Party party;
@@ -91,6 +93,18 @@ public class SearchTracksActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseHelper.addPartyListener(party, this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseHelper.removePartyListener(party, this);
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         // save party and attendee
@@ -111,7 +125,8 @@ public class SearchTracksActivity extends AppCompatActivity
             case R.id.add_track_to_queue_btn:
                 // get track to add from view tag
                 Track track = (Track) v.getTag();
-                // TODO: implement
+                // add track to queue
+                firebaseHelper.addTrackToQueue(party, track, this);
                 break;
             default:
                 break;
@@ -131,10 +146,32 @@ public class SearchTracksActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSearchResults(@NotNull TrackList trackList) {
+    public void onSearchResults(TrackList trackList) {
+        if (trackList == null) {
+            // TODO: error handling; most likely expired/invalid accessToken
+            Toast.makeText(this, "Some error ...", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // update track adapter
         rvAdapter.setTracks(trackList.getItems());
         rvAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPartyChanged(@NotNull Party party) {
+        // update party instance
+        this.party = party;
+    }
+
+    @Override
+    public void onAddedTrackToQueue(@org.jetbrains.annotations.Nullable QueueTrack track) {
+        if (track != null) {
+            Toast.makeText(this, "added to queue", Toast.LENGTH_SHORT).show();
+        } else {
+            // TODO: error handling
+            Toast.makeText(this, "Some error ...", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private static class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
@@ -181,11 +218,7 @@ public class SearchTracksActivity extends AppCompatActivity
 
                 TextView artistNameTxtView = itemView.findViewById(R.id.artist_name_txt_view);
                 // set artist name
-                artistNameTxtView.setText(track.getArtists()
-                        .stream()
-                        .map(Artist::getName)
-                        .reduce((a1, a2) -> a1 + ", " + a2)
-                        .get());
+                artistNameTxtView.setText(track.getArtistNames());
 
                 // load album cover
                 ImageView albumCoverImgView = itemView.findViewById(R.id.album_cover_img_view);

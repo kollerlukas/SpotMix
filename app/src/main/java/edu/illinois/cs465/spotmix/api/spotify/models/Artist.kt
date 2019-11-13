@@ -23,4 +23,9 @@ data class Artist(
     @SerializedName("name") val name: String,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this(ExternalUrls(), "", "", "", "", "")
+}

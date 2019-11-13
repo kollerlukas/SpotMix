@@ -2,8 +2,6 @@ package edu.illinois.cs465.spotmix.api.spotify.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import edu.illinois.cs465.spotmix.api.spotify.models.ExternalUrls
-import edu.illinois.cs465.spotmix.api.spotify.models.Followers
 import kotlinx.android.parcel.Parcelize
 
 /*
@@ -28,4 +26,9 @@ data class User(
     @SerializedName("images") val images: List<String>,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
-) : Parcelable
+) : Parcelable {
+
+    // used to reconstruct obj when reading from Firebase
+    @Suppress("unused")
+    constructor() : this("", "", ExternalUrls(), Followers(), "", "", mutableListOf(), "", "")
+}

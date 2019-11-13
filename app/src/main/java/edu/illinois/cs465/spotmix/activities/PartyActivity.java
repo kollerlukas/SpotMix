@@ -90,7 +90,7 @@ public class PartyActivity extends AppCompatActivity
     }
 
     @Override
-    public void onChange(@NotNull Party party) {
+    public void onPartyChanged(@NotNull Party party) {
         this.party = party;
     }
 
