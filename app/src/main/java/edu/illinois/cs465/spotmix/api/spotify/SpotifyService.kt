@@ -2,6 +2,7 @@
 
 package edu.illinois.cs465.spotmix.api.spotify
 
+import android.util.Log
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackSearchRequestBase
 import edu.illinois.cs465.spotmix.api.spotify.models.User
 import retrofit2.Call
@@ -60,5 +61,6 @@ public abstract class SimpleRetrofitCallback<T> : Callback<T> {
 
     override fun onFailure(call: Call<T>, t: Throwable) {
         onResult(null)
+        Log.e("SpotifyService", "onFailure()", t);
     }
 }

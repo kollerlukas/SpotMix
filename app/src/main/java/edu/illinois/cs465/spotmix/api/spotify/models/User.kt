@@ -23,7 +23,7 @@ data class User(
     @SerializedName("followers") val followers: Followers,
     @SerializedName("href") val href: String,
     @SerializedName("id") val id: String,
-    @SerializedName("images") val images: List<String>,
+    @SerializedName("images") val images: List<Image>,
     @SerializedName("type") val type: String,
     @SerializedName("uri") val uri: String
 ) : Parcelable {

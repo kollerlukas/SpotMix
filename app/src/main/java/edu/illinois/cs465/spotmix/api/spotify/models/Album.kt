@@ -23,7 +23,7 @@ data class Album(
     @SerializedName("external_urls") val external_urls: ExternalUrls,
     @SerializedName("href") val href: String,
     @SerializedName("id") val id: String,
-    @SerializedName("images") val images: List<Images>,
+    @SerializedName("images") val images: List<Image>,
     @SerializedName("name") val name: String,
     @SerializedName("release_date") val release_date: String,
     @SerializedName("release_date_precision") val release_date_precision: String,
