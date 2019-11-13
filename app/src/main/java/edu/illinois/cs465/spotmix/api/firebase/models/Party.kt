@@ -13,7 +13,9 @@ data class Party @JvmOverloads constructor(
     val queue: MutableList<QueueTrack> = mutableListOf(),
     val attendees: MutableList<Attendee> = mutableListOf(),
     // accessToken to use Spotify Api; provided by host
-    var accessToken: String? = null
+    var accessToken: String? = null,
+    var playing: Boolean = false,
+    var currentTrack: QueueTrack? = null
 ) : Parcelable {
 
     companion object {

@@ -207,6 +207,30 @@ class FirebaseHelper {
     }
 
     /**
+     * Playback started.
+     * @param party
+     * */
+    fun playing(party: Party) {
+        party.playing = true
+        // get party instance from Firebase
+        val partyDb = database.child(party.key!!)
+        // update playing value
+        partyDb.child("playing").setValue(party.playing)
+    }
+
+    /**
+     * Paused playback.
+     * @param
+     * */
+    fun paused(party: Party) {
+        party.playing = false
+        // get party instance from Firebase
+        val partyDb = database.child(party.key!!)
+        // update playing value
+        partyDb.child("playing").setValue(party.playing)
+    }
+
+    /**
      * Upvote a track from the current party queue.
      * @param party
      * @param track
@@ -249,10 +273,12 @@ class FirebaseHelper {
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // get party instance
-                    val newParty = snapshot.getValue(Party::class.java)!!
-                    // notfiy all subcribers
-                    partyListeners.forEach { it.onPartyChanged(newParty) }
+                    if (snapshot.value != null) {
+                        // get party instance
+                        val newParty = snapshot.getValue(Party::class.java)!!
+                        // notfiy all subcribers
+                        partyListeners.forEach { it.onPartyChanged(newParty) }
+                    }
                 }
             }
             database.child(party.key!!).addValueEventListener(partyValueEventListener!!)

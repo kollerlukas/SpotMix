@@ -1,7 +1,6 @@
 package edu.illinois.cs465.spotmix.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -176,11 +175,7 @@ public class SearchTracksActivity extends AppCompatActivity
 
     private static class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
 
-        private List<Track> tracks;
-
-        TrackAdapter() {
-            tracks = new LinkedList<>();
-        }
+        private List<Track> tracks = new LinkedList<>();
 
         void setTracks(List<Track> tracks) {
             this.tracks = tracks;
@@ -190,7 +185,7 @@ public class SearchTracksActivity extends AppCompatActivity
         @Override
         public TrackHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_view_track, parent, false);
+                    .inflate(R.layout.item_view_search_track, parent, false);
             return new TrackHolder(itemView);
         }
 

@@ -16,6 +16,7 @@ import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackList
 import edu.illinois.cs465.spotmix.api.spotify.models.TrackSearchRequestBase
 import edu.illinois.cs465.spotmix.api.spotify.models.User
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,7 +31,11 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @param accessToken token to access Spotify Auth Api
  * */
 @Parcelize
-class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<PlayerState>, Parcelable {
+class SpotifyHelper @JvmOverloads constructor(
+    var accessToken: String,
+    private var currentTrack: QueueTrack? = null
+) :
+    Subscription.EventCallback<PlayerState>, Parcelable {
 
     /**
      * Callback to return search results to caller.
@@ -42,6 +47,30 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
          * @param trackList, null if error encountered
          * */
         fun onSearchResults(trackList: TrackList?)
+    }
+
+    /**
+     * Interface for getting the next track in the queue.
+     * */
+    interface QueueCallback {
+
+        /**
+         * Called when next track from the queue is needed.
+         * @return the next track in the queue. null if queue empty
+         * */
+        fun getNextTrackFromQueue(): QueueTrack?
+    }
+
+    /**
+     * Callback for playback state.
+     * */
+    interface PlaybackStateListener {
+
+        /**
+         * Called everytime the playback state changes.
+         * @param state
+         * */
+        fun onPlaybackEvent(state: PlayerState?)
     }
 
     companion object {
@@ -72,6 +101,13 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
     // handle for the Spotify Api
     @Suppress("PLUGIN_WARNING")
     private val service: SpotifyService
+
+    @IgnoredOnParcel
+    var queueCallback: QueueCallback? = null
+
+    // all subscribed playback listeners
+    @IgnoredOnParcel
+    private var playbackListeners: MutableList<PlaybackStateListener> = mutableListOf()
 
     init {
         // init Gson
@@ -154,10 +190,16 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
     }
 
     /**
-     *
+     * Start the music playback. Either continue paused playback or play the next song in the queue.
      * */
     fun play() {
-        TODO("not implemented")
+        Log.d("SpotifyHelper", "play() called")
+        if (currentTrack != null) {
+            spotifyAppRemote?.playerApi?.resume()
+        } else {
+            currentTrack = queueCallback?.getNextTrackFromQueue()
+            spotifyAppRemote?.playerApi?.play(currentTrack?.track?.uri)
+        }
     }
 
     /**
@@ -172,6 +214,33 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
      * @param playerState
      * */
     override fun onEvent(playerState: PlayerState?) {
-        // TODO("not implemented")
+        // notify all suscribers
+        playbackListeners.forEach { it.onPlaybackEvent(playerState) }
+
+        if (currentTrack != null && playerState?.track?.uri != currentTrack?.track?.uri) {
+            // next track has started => play next track from the queue
+            currentTrack = queueCallback?.getNextTrackFromQueue()
+            if (currentTrack != null) {
+                spotifyAppRemote?.playerApi?.play(currentTrack!!.track.uri)
+            } else {
+                pause()
+            }
+        }
+    }
+
+    /**
+     * Subscribe to the playback changes.
+     * @param listener
+     * */
+    fun addPlaybackStateListener(listener: PlaybackStateListener) {
+        playbackListeners.add(listener)
+    }
+
+    /**
+     * Unsubscribe from playback changes.
+     * @param listener
+     * */
+    fun removePlaybackStateListener(listener: PlaybackStateListener) {
+        playbackListeners.remove(listener)
     }
 }
