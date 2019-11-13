@@ -20,7 +20,7 @@ import edu.illinois.cs465.spotmix.api.spotify.models.User;
 public class CreatePartyActivity extends AppCompatActivity
         implements View.OnClickListener, FirebaseHelper.CreateCallback {
 
-    // spotify helper
+    // spotify helper - testing commit
     private SpotifyHelper helper;
 
     @Override
