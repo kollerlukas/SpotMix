@@ -108,5 +108,6 @@ class SpotifyAuthApiFragment : Fragment(), View.OnClickListener {
             else -> {
             }
         }// Most likely auth flow was cancelled
+        // check if commit works
     }
 }
