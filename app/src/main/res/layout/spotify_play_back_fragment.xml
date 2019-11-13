@@ -43,10 +43,4 @@
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/track_time_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100" />
 </LinearLayout>

@@ -239,6 +239,8 @@ class FirebaseHelper {
     fun upvoteTrack(party: Party, track: QueueTrack, attendee: Attendee) {
         // upvote the track
         track.upvotes.add(attendee)
+        // TODO: more sophisticated algorithm
+        party.queue.sortByDescending { it.upvotes.size }
         // get party instance from Firebase
         val partyDb = database.child(party.key!!)
         // update queue
@@ -254,6 +256,8 @@ class FirebaseHelper {
     fun downvoteTrack(party: Party, track: QueueTrack, attendee: Attendee) {
         // downvote the track
         track.downvotes.add(attendee)
+        // TODO: more sophisticated algorithm
+        party.queue.sortByDescending { it.upvotes.size }
         // get party instance from Firebase
         val partyDb = database.child(party.key!!)
         // update queue

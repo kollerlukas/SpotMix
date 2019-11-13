@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.spotify.protocol.types.PlayerState
 import edu.illinois.cs465.spotmix.R
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper
+import edu.illinois.cs465.spotmix.api.firebase.models.Attendee
 import edu.illinois.cs465.spotmix.api.firebase.models.Party
 import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack
 import edu.illinois.cs465.spotmix.api.spotify.SpotifyHelper
@@ -21,6 +22,8 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
     SpotifyHelper.QueueCallback, SpotifyHelper.PlaybackStateListener {
 
     lateinit var party: Party
+
+    lateinit var attendee: Attendee
 
     var spotifyHelper: SpotifyHelper? = null
 
@@ -42,6 +45,17 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
     override fun onStart() {
         super.onStart()
+        if (attendee.admin) {
+            // set visibility to gone
+            view?.prev_track_img_btn?.visibility = View.VISIBLE
+            view?.play_pause_img_btn?.visibility = View.VISIBLE
+            view?.next_track_img_btn?.visibility = View.VISIBLE
+        } else {
+            // set visibility to gone
+            view?.prev_track_img_btn?.visibility = View.GONE
+            view?.play_pause_img_btn?.visibility = View.GONE
+            view?.next_track_img_btn?.visibility = View.GONE
+        }
         // get notified when party state changes
         firebaseHelper.addPartyListener(party, this)
         // add playback listener to update album covers
@@ -76,7 +90,6 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
         } else {
             firebaseHelper.playing(party)
         }
-
 
         // update play-pause button icon
         val imgRes = if (state.isPaused)

@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +46,6 @@ public class PartyActivity extends AppCompatActivity
     private SpotifyHelper spotifyHelper;
     private FirebaseHelper firebaseHelper;
 
-    private SpotifyPlaybackFragment playBackFragment;
-
     private QueueAdapter rvAdapter;
 
     @Override
@@ -78,13 +77,12 @@ public class PartyActivity extends AppCompatActivity
         firebaseHelper = new FirebaseHelper();
 
         // find static spotify fragment
-        playBackFragment = (SpotifyPlaybackFragment)
+        SpotifyPlaybackFragment playBackFragment = (SpotifyPlaybackFragment)
                 getSupportFragmentManager().findFragmentById(R.id.spotify_play_back_fragment);
         if (playBackFragment != null) {
-            // set spotify helper
             playBackFragment.setSpotifyHelper(spotifyHelper);
-            // set party
             playBackFragment.setParty(party);
+            playBackFragment.setAttendee(attendee);
         }
 
         // find recyclerView
@@ -92,7 +90,7 @@ public class PartyActivity extends AppCompatActivity
         // set a LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // set an Adapter
-        rvAdapter = new QueueAdapter();
+        rvAdapter = new QueueAdapter(attendee);
         recyclerView.setAdapter(rvAdapter);
     }
 
@@ -169,7 +167,6 @@ public class PartyActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        //noinspection SwitchStatementWithTooFewBranches
         switch (v.getId()) {
             case R.id.fab:
                 Intent searchTracksIntent = new Intent(this, SearchTracksActivity.class);
@@ -179,6 +176,14 @@ public class PartyActivity extends AppCompatActivity
                 // start search Track activity
                 startActivity(searchTracksIntent);
                 break;
+            case R.id.down_vote_btn:
+                // get track to vote from view tag
+                firebaseHelper.downvoteTrack(party, (QueueTrack) v.getTag(), attendee);
+                break;
+            case R.id.up_vote_btn:
+                // get track to vote from view tag
+                firebaseHelper.upvoteTrack(party, (QueueTrack) v.getTag(), attendee);
+                break;
             default:
                 break;
         }
@@ -186,9 +191,15 @@ public class PartyActivity extends AppCompatActivity
 
     private static class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueHolder> {
 
+        private Attendee attendee;
+
         private List<QueueTrack> queue = new LinkedList<>();
 
-        public void setQueue(List<QueueTrack> queue) {
+        QueueAdapter(Attendee attendee) {
+            this.attendee = attendee;
+        }
+
+        void setQueue(List<QueueTrack> queue) {
             this.queue = queue;
         }
 
@@ -204,7 +215,7 @@ public class PartyActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(@NonNull QueueHolder holder, int position) {
-            holder.bind(queue.get(position));
+            holder.bind(queue.get(position), attendee);
         }
 
         @Override
@@ -218,7 +229,7 @@ public class PartyActivity extends AppCompatActivity
                 super(itemView);
             }
 
-            void bind(QueueTrack track) {
+            void bind(QueueTrack track, Attendee attendee) {
                 TextView trackTitleTxtView = itemView.findViewById(R.id.track_title_txt_view);
                 // set track title
                 trackTitleTxtView.setText(track.getTrack().getName());
@@ -233,6 +244,19 @@ public class PartyActivity extends AppCompatActivity
                         .load(track.getTrack().getAlbum().getImages().get(0).getUrl())
                         .placeholder(R.drawable.ic_broken_image_black_48dp)
                         .into(albumCoverImgView);
+
+                boolean voted = track.getDownvotes().contains(attendee)
+                        || track.getUpvotes().contains(attendee);
+
+                ImageButton upVoteBtn = itemView.findViewById(R.id.up_vote_btn);
+                //upVoteBtn.setEnabled(!voted);
+                // set tag to Image button, to know which track to vote
+                upVoteBtn.setTag(track);
+
+                ImageButton downVoteBtn = itemView.findViewById(R.id.down_vote_btn);
+                //downVoteBtn.setEnabled(!voted);
+                // set tag to Image button, to know which track to vote
+                downVoteBtn.setTag(track);
             }
         }
     }

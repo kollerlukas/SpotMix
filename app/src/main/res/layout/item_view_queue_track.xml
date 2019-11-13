@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
-    tools:context=".activities.SearchTracksActivity">
+    tools:context=".activities.PartyActivity">
 
     <ImageView
         android:id="@+id/album_cover_img_view"
@@ -35,4 +35,21 @@
             android:maxLines="1" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/up_vote_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:src="@drawable/ic_arrow_upward_black_24dp"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/down_vote_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:src="@drawable/ic_arrow_downward_black_24dp"
+        tools:ignore="ContentDescription" />
+
 </LinearLayout>
