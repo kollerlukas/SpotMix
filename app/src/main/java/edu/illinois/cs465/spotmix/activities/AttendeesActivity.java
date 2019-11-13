@@ -3,6 +3,7 @@ package edu.illinois.cs465.spotmix.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -67,8 +68,8 @@ public class AttendeesActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         // set a LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // set an Adapter; start with empty list
-        rvAdapter = new AttendeeAdapter(new LinkedList<Attendee>());
+        // set an Adapter
+        rvAdapter = new AttendeeAdapter();
         recyclerView.setAdapter(rvAdapter);
     }
 
@@ -76,7 +77,7 @@ public class AttendeesActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         // clear attendees list
-        rvAdapter.setAttendees(new LinkedList<Attendee>());
+        rvAdapter.setAttendees(new LinkedList<>());
         rvAdapter.notifyDataSetChanged();
         // register attendee listener
         firebaseHelper.addAttendeeListener(party, this);
@@ -106,6 +107,18 @@ public class AttendeesActivity extends AppCompatActivity
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -141,8 +154,8 @@ public class AttendeesActivity extends AppCompatActivity
 
         private List<Attendee> attendees;
 
-        AttendeeAdapter(List<Attendee> attendees) {
-            this.attendees = attendees;
+        AttendeeAdapter() {
+            this.attendees = new LinkedList<>();
         }
 
         void setAttendees(List<Attendee> attendees) {

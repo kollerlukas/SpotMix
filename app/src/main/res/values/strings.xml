@@ -18,4 +18,6 @@
     <string name="party">Party</string>
 
     <string name="admin">Admin</string>
+
+    <string name="search_tracks">Search Tracks</string>
 </resources>

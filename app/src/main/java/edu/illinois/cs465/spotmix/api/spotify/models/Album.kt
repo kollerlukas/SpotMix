@@ -18,7 +18,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 @Parcelize
 data class Album(
     @SerializedName("album_type") val album_type: String,
-    @SerializedName("artists") val artists: List<Artists>,
+    @SerializedName("artists") val artists: List<Artist>,
     @SerializedName("available_markets") val available_markets: List<String>,
     @SerializedName("external_urls") val external_urls: ExternalUrls,
     @SerializedName("href") val href: String,

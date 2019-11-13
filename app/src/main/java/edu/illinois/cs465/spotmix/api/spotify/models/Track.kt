@@ -19,7 +19,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 data class Track(
 
     @SerializedName("album") val album: Album,
-    @SerializedName("artists") val artists: List<Artists>,
+    @SerializedName("artists") val artists: List<Artist>,
     @SerializedName("available_markets") val available_markets: List<String>,
     @SerializedName("disc_number") val disc_number: Int,
     @SerializedName("duration_ms") val duration_ms: Int,

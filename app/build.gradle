@@ -26,6 +26,11 @@ android {
     androidExtensions {
         experimental = true
     }
+    // to solve kotlin issue with Java Lambdas
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -37,9 +42,10 @@ dependencies {
 
     // Android App Compat
     implementation 'androidx.appcompat:appcompat:1.1.0'
-
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    // Floating Action Button
+    implementation 'com.google.android.material:material:1.0.0'
 
     // Spotify authentication and authorization
     implementation 'com.spotify.android:auth:1.1.0'

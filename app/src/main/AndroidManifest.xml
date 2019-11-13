@@ -37,8 +37,11 @@
 
         <activity
             android:name=".activities.AttendeesActivity"
-            android:label="@string/attendees"
-            android:parentActivityName=".activities.PartyActivity" />
+            android:label="@string/attendees" />
+
+        <activity
+            android:name=".activities.SearchTracksActivity"
+            android:label="@string/search_tracks" />
 
         <!-- Needed for Spotify Auth Api -->
         <activity

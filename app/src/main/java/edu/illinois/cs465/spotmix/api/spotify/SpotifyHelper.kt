@@ -12,6 +12,8 @@ import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.Subscription
 import com.spotify.protocol.types.PlayerState
+import edu.illinois.cs465.spotmix.api.spotify.models.TrackList
+import edu.illinois.cs465.spotmix.api.spotify.models.TrackSearchRequestBase
 import edu.illinois.cs465.spotmix.api.spotify.models.User
 import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
@@ -29,8 +31,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Parcelize
 class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<PlayerState>, Parcelable {
 
-    interface UserCallback {
-        fun onUser(user: User)
+    /**
+     * Callback to return search results to caller.
+     * */
+    interface SearchTrackCallback {
+
+        /**
+         * Called when search results are available.
+         * @param trackList
+         * */
+        fun onSearchResults(trackList: TrackList)
     }
 
     companion object {
@@ -121,15 +131,27 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
 
     /**
      * Get the currently signed in user.
+     * @param callback
      * */
     fun getUser(callback: SimpleRetrofitCallback<User>) =
         service.fetchUser(accessToken).enqueue(callback)
 
     /**
      * Search tracks on Spotify.
+     * @param keyword
+     * @param callback
      * */
-    fun searchTrack(keyword: String) {
-        TODO("not implemented")
+    fun searchTrack(keyword: String, callback: SearchTrackCallback) {
+        service.searchTracks(accessToken, keyword)
+            .enqueue(object : SimpleRetrofitCallback<TrackSearchRequestBase>() {
+                override fun onResult(result: TrackSearchRequestBase?) {
+                    super.onResult(result)
+                    // notify callback
+                    if (result != null) {
+                        callback.onSearchResults(result.trackList)
+                    }
+                }
+            })
     }
 
     /**
@@ -148,8 +170,9 @@ class SpotifyHelper(var accessToken: String) : Subscription.EventCallback<Player
 
     /**
      * Receive updates of the PlayerState
+     * @param playerState
      * */
     override fun onEvent(playerState: PlayerState?) {
-        TODO("not implemented")
+        // TODO("not implemented")
     }
 }

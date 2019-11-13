@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
 @Parcelize
-data class Artists(
+data class Artist(
     @SerializedName("external_urls") val external_urls: ExternalUrls,
     @SerializedName("href") val href: String,
     @SerializedName("id") val id: String,

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,8 @@ import edu.illinois.cs465.spotmix.api.firebase.models.Attendee;
 import edu.illinois.cs465.spotmix.api.firebase.models.Party;
 import edu.illinois.cs465.spotmix.api.spotify.SpotifyHelper;
 
-public class PartyActivity extends AppCompatActivity implements FirebaseHelper.PartyListener {
+public class PartyActivity extends AppCompatActivity
+        implements View.OnClickListener, FirebaseHelper.PartyListener {
 
     // instance of a party to display
     private Party party;
@@ -36,7 +38,7 @@ public class PartyActivity extends AppCompatActivity implements FirebaseHelper.P
         setContentView(R.layout.activity_party);
 
         if (savedInstanceState != null) {
-            // retsore state
+            // restore state
             party = savedInstanceState.getParcelable(Party.PARCEL_KEY);
             attendee = savedInstanceState.getParcelable(Attendee.PARCEL_KEY);
         } else {
@@ -72,13 +74,19 @@ public class PartyActivity extends AppCompatActivity implements FirebaseHelper.P
     @Override
     protected void onStart() {
         super.onStart();
+        // get notified when party state changes
         firebaseHelper.addPartyListener(party, this);
+        // connect app remote
+        spotifyHelper.connect(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // remove listener
         firebaseHelper.removePartyListener(party, this);
+        // disconnect app remote
+        spotifyHelper.disconnect();
     }
 
     @Override
@@ -117,6 +125,23 @@ public class PartyActivity extends AppCompatActivity implements FirebaseHelper.P
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (v.getId()) {
+            case R.id.fab:
+                Intent searchTracksIntent = new Intent(this, SearchTracksActivity.class);
+                // pass party & attendee instance to party activity
+                searchTracksIntent.putExtra(Party.PARCEL_KEY, party);
+                searchTracksIntent.putExtra(Attendee.PARCEL_KEY, attendee);
+                // start search Track activity
+                startActivity(searchTracksIntent);
+                break;
+            default:
+                break;
         }
     }
 }
