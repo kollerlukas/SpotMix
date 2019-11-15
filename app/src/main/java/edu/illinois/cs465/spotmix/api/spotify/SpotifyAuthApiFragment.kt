@@ -91,7 +91,7 @@ class SpotifyAuthApiFragment : Fragment(), View.OnClickListener {
                             sign_in_btn.visibility = View.GONE
                             // load user profile image
                             Glide.with(context!!)
-                                .load(result.images)
+                                .load(result.images[0].url)
                                 .placeholder(R.drawable.ic_account_circle_black_48dp)
                                 .into(user_profile_img)
                             user_profile_img.visibility = View.VISIBLE
