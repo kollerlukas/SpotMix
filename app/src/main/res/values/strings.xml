@@ -2,6 +2,7 @@
     <string name="app_name">SpotMix</string>
 
     <string name="create_party">Create Party</string>
+    <string name="create_party_hint">Party Name</string>
     <string name="join_party">Join Party</string>
     <string name="spotify_sign_in">LOG IN WITH SPOTIFY</string>
 
