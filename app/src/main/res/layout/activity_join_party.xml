@@ -2,22 +2,39 @@
 
 <!--TODO: make layout nice-->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.JoinPartyActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TODO" />
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_above="@+id/qrCode"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Join a Party by Scanning QR Code"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/qrCode"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="350dp"
+            android:src="@drawable/qr_code">
+        </ImageView>
+    </RelativeLayout>
 
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="bottom"
         android:orientation="horizontal">
 
         <EditText
@@ -25,7 +42,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Party Code" />
+            android:gravity="bottom"
+            android:hint="Enter Party Code Here!" />
 
         <Button
             android:id="@+id/join_btn"
@@ -36,4 +54,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
