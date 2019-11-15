@@ -1,11 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="ButtonStylePrimary" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_primary</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="ButtonStyleSecondary" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_secondary</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>
