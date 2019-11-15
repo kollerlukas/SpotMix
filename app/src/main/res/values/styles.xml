@@ -13,14 +13,14 @@
 
     <style name="ButtonStylePrimary" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button_primary</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@drawable/text_color</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="ButtonStyleSecondary" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button_secondary</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@drawable/text_color</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>
     </style>

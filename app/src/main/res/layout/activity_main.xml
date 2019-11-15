@@ -21,7 +21,7 @@
 
     <Button
         android:id="@+id/join_party_btn"
-        style="@style/ButtonStyleSecondary"
+        style="@style/ButtonStylePrimary"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:onClick="onClick"
@@ -29,7 +29,7 @@
 
     <Button
         android:id="@+id/create_party_btn"
-        style="@style/ButtonStylePrimary"
+        style="@style/ButtonStyleSecondary"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:enabled="false"
