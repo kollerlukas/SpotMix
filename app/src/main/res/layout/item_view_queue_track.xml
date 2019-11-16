@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
+    android:gravity="center_vertical"
     tools:context=".activities.PartyActivity">
 
     <ImageView
@@ -40,12 +41,15 @@
         android:id="@+id/up_vote_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:onClick="onClick"
+        android:paddingRight="15dp"
         android:src="@drawable/ic_arrow_upward_black_24dp"
         tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/down_vote_btn"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
