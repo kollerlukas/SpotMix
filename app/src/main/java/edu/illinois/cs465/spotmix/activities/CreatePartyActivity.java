@@ -47,7 +47,7 @@ public class CreatePartyActivity extends AppCompatActivity
         spinner.setOnItemSelectedListener(this);
 
         List<String> playlistOptions = new ArrayList<String>();
-        playlistOptions.add("Feedback Playlist");
+        playlistOptions.add("Fallback Playlist");
         playlistOptions.add("Playlist1");
         playlistOptions.add("Playlist2");
         playlistOptions.add("Playlist3");
@@ -115,7 +115,7 @@ public class CreatePartyActivity extends AppCompatActivity
         String item = adapterView.getItemAtPosition(i).toString();
 
         // Showing selected spinner item
-        Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
     }
 
     @Override
