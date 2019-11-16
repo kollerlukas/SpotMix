@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingVertical="10dp"
-        android:background="#000000">
+        android:background="#121212">
 
         <ImageButton
             android:id="@+id/prev_track_img_btn"

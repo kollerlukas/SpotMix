@@ -6,6 +6,7 @@
     android:orientation="horizontal"
     android:paddingHorizontal="8dp"
     android:paddingVertical="12dp"
+    android:background="@android:color/transparent"
     android:gravity="center_vertical"
     tools:context=".activities.PartyActivity">
 
