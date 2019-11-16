@@ -48,7 +48,7 @@ public class AttendeesActivity extends AppCompatActivity
         }
 
         if (savedInstanceState != null) {
-            // retsore state
+            // restore state
             party = savedInstanceState.getParcelable(Party.PARCEL_KEY);
         } else {
             // extract party instance from intent

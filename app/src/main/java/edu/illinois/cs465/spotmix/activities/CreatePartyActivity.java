@@ -31,8 +31,6 @@ public class CreatePartyActivity extends AppCompatActivity
     // spotify helper - testing commit
     private SpotifyHelper helper;
 
-    private Spinner spinner;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +40,17 @@ public class CreatePartyActivity extends AppCompatActivity
         helper = getIntent().getParcelableExtra(SpotifyHelper.PARCEL_KEY);
 
         // get spinner from activity_create_party.xml
-        spinner =(Spinner)findViewById(R.id.fallback_playlist_spinner);
+        Spinner spinner = findViewById(R.id.fallback_playlist_spinner);
 
         spinner.setOnItemSelectedListener(this);
 
-        List<String> playlistOptions = new ArrayList<String>();
+        List<String> playlistOptions = new ArrayList<>();
         playlistOptions.add("Fallback Playlist");
         playlistOptions.add("Playlist1");
         playlistOptions.add("Playlist2");
         playlistOptions.add("Playlist3");
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, playlistOptions);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, playlistOptions);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(dataAdapter);
