@@ -127,7 +127,8 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
             palette = Palette.from(bitmap).generate()
         }
 
-        view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(palette?.getVibrantColor(0))
+        // Set color to most vibrant color -> else most dominant color -> else transparent
+        view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(palette?.getVibrantColor(palette?.getDominantColor(0)))
     }
 
     override fun onClick(v: View?) {
