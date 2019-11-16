@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="12dp"
     android:gravity="center_vertical"
     tools:context=".activities.PartyActivity">
 
