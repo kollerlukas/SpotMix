@@ -23,4 +23,6 @@
     <string name="search_tracks">Search Tracks</string>
 
     <string name="please_log_in_to_create_a_party">Please log in to create a party.</string>
+
+    <string name="track_already_in_queue">Track is already in the queue.</string>
 </resources>

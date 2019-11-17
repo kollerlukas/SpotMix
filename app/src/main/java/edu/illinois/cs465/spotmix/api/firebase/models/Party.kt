@@ -1,6 +1,7 @@
 package edu.illinois.cs465.spotmix.api.firebase.models
 
 import android.os.Parcelable
+import edu.illinois.cs465.spotmix.api.spotify.models.Track
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -29,4 +30,8 @@ data class Party @JvmOverloads constructor(
     // used to reconstruct Party obj when reading from Firebase
     @Suppress("unused")
     constructor() : this("", null)
+
+    fun isTrackInQueue(track: Track): Boolean {
+        return queue.find { it.track.uri == track.uri } != null
+    }
 }

@@ -92,7 +92,7 @@ class SpotifyAuthApiFragment : Fragment(), View.OnClickListener {
                             // load user profile image
                             Glide.with(context!!)
                                 .load(if (result.images.isNotEmpty()) result.images[0].url else null)
-                                .placeholder(R.drawable.ic_account_circle_black_48dp)
+                                .placeholder(R.drawable.ic_account_circle_48dp)
                                 .into(user_profile_img)
                             user_profile_img.visibility = View.VISIBLE
                             // display user name

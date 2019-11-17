@@ -249,7 +249,7 @@ public class PartyActivity extends AppCompatActivity
                 ImageView albumCoverImgView = itemView.findViewById(R.id.album_cover_img_view);
                 Glide.with(itemView.getContext())
                         .load(track.getTrack().getAlbum().getImages().get(0).getUrl())
-                        .placeholder(R.drawable.ic_broken_image_black_48dp)
+                        .placeholder(R.drawable.ic_broken_image_48dp)
                         .into(albumCoverImgView);
 
                 boolean voted = track.getDownvotes().contains(attendee)

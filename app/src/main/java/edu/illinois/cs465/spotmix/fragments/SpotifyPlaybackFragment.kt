@@ -100,14 +100,14 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
         // update play-pause button icon
         val imgRes = if (state.isPaused)
-            R.drawable.ic_play_arrow_black_24dp else R.drawable.ic_pause_black_24dp
+            R.drawable.ic_play_arrow_24dp else R.drawable.ic_pause_24dp
         view?.findViewById<ImageButton>(R.id.play_pause_img_btn)?.setImageResource(imgRes)
 
         // update album cover
         if (context != null && view != null) {
             Glide.with(context!!)
                 .load(party.queue[0].track.album.images[0].url)
-                .placeholder(R.drawable.ic_broken_image_black_48dp)
+                .placeholder(R.drawable.ic_broken_image_48dp)
                 .into(view!!.findViewById(R.id.current_track_album_cover_img_view))
 
             // Update background color to most dominant color in album cover

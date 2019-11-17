@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -124,8 +125,12 @@ public class SearchTracksActivity extends AppCompatActivity
             case R.id.add_track_to_queue_btn:
                 // get track to add from view tag
                 Track track = (Track) v.getTag();
-                // add track to queue
-                firebaseHelper.addTrackToQueue(party, track, this);
+                if (!party.isTrackInQueue(track)) {
+                    // add track to queue
+                    firebaseHelper.addTrackToQueue(party, track, this);
+                } else {
+                    Toast.makeText(this, R.string.track_already_in_queue, Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;
@@ -219,11 +224,12 @@ public class SearchTracksActivity extends AppCompatActivity
                 ImageView albumCoverImgView = itemView.findViewById(R.id.album_cover_img_view);
                 Glide.with(itemView.getContext())
                         .load(track.getAlbum().getImages().get(0).getUrl())
-                        .placeholder(R.drawable.ic_broken_image_black_48dp)
+                        .placeholder(R.drawable.ic_broken_image_48dp)
                         .into(albumCoverImgView);
 
+                ImageButton addToQueueBtn = itemView.findViewById(R.id.add_track_to_queue_btn);
                 // set tag to Image button, to know which track to add
-                itemView.findViewById(R.id.add_track_to_queue_btn).setTag(track);
+                addToQueueBtn.setTag(track);
             }
         }
     }
