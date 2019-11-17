@@ -1,9 +1,7 @@
 package edu.illinois.cs465.spotmix.fragments
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.transition.Transition
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.BitmapImageViewTarget
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.ImageViewTarget
 import com.spotify.protocol.types.PlayerState
 import edu.illinois.cs465.spotmix.R
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper
@@ -118,17 +110,21 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                 .placeholder(R.drawable.ic_broken_image_black_48dp)
                 .into(view!!.findViewById(R.id.current_track_album_cover_img_view))
 
-        // Update background color to most dominant color in album cover
+            // Update background color to most dominant color in album cover
             bitmap = Glide.with(context!!)
-                        .asBitmap()
-                        .load(party.queue[0].track.album.images[0].url)
-                        .submit().get()
+                .asBitmap()
+                .load(party.queue[0].track.album.images[0].url)
+                .submit().get()
 
             palette = Palette.from(bitmap).generate()
         }
 
         // Set color to most vibrant color -> else most dominant color -> else transparent
-        view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(palette?.getVibrantColor(palette?.getDominantColor(0)))
+        view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
+            palette.getVibrantColor(
+                palette.getDominantColor(0)
+            )
+        )
     }
 
     override fun onClick(v: View?) {

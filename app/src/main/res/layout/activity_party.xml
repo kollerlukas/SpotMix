@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
     tools:context=".activities.PartyActivity">
 
     <LinearLayout
@@ -20,14 +20,15 @@
             android:name="edu.illinois.cs465.spotmix.fragments.SpotifyPlaybackFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:paddingHorizontal="10dp"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
 
     </LinearLayout>
 

@@ -1,51 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/spotify_play_back_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".activities.PartyActivity"
-    android:id="@+id/spotify_play_back_fragment">
+    tools:context=".activities.PartyActivity">
 
     <LinearLayout
+        android:id="@+id/album_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/album_background">
+        android:layout_height="250dp"
+        android:background="@drawable/gradient_fade"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/current_track_album_cover_img_view"
             android:layout_width="match_parent"
-            android:layout_height="250dp">
-
-            <ImageView
-                android:id="@+id/current_track_album_cover_img_view"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                tools:ignore="ContentDescription"
-                android:layout_centerInParent="true"/>
-
-            <View
-                android:background="@drawable/gradient_fade"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </RelativeLayout>
+            android:layout_height="150dp"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#121212"
         android:orientation="horizontal"
-        android:paddingVertical="10dp"
-        android:background="#121212">
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
         <ImageButton
             android:id="@+id/prev_track_img_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_skip_previous_black_24dp"
             tools:ignore="ContentDescription" />
 
@@ -54,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_play_arrow_black_24dp"
             tools:ignore="ContentDescription" />
 
@@ -63,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_skip_next_black_24dp"
             tools:ignore="ContentDescription" />
 

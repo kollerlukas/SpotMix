@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.helper = helper;
         // enable Create party button
         findViewById(R.id.create_party_btn).setEnabled(true);
+        // hide hint
+        findViewById(R.id.create_party_log_in_hint).setVisibility(View.GONE);
     }
 
     @Override

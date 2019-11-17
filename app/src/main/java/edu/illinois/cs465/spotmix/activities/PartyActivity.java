@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +70,12 @@ public class PartyActivity extends AppCompatActivity
             // TODO: error handling
             Toast.makeText(this, "Some error...", Toast.LENGTH_SHORT).show();
             finish();
+        }
+
+        // set party name
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(party.getName());
         }
 
         // instantiate Spotify Helper
