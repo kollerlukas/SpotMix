@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Join a Party by Scanning QR Code"
+            android:text="Scan QR Code to join party"
             android:textAlignment="center"
             android:textSize="20sp"/>
         <ImageView

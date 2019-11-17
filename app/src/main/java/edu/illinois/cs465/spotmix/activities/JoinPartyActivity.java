@@ -41,6 +41,7 @@ public class JoinPartyActivity extends AppCompatActivity
                 nameEditText.setInputType(InputType.TYPE_CLASS_TEXT);
                 // create AlertDialog
                 new AlertDialog.Builder(this)
+                        .setMessage("Enter your name:")
                         .setView(nameEditText)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
