@@ -1,16 +1,13 @@
 package edu.illinois.cs465.spotmix.fragments
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.spotify.protocol.types.PlayerState
 import edu.illinois.cs465.spotmix.R
@@ -27,10 +24,6 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
     lateinit var party: Party
 
     lateinit var attendee: Attendee
-
-    lateinit var bitmap: Bitmap
-
-    lateinit var palette: Palette
 
     var spotifyHelper: SpotifyHelper? = null
 
@@ -80,6 +73,8 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
     override fun onPartyChanged(party: Party) {
         this.party = party
+        // reload album cover
+        loadAlbumCover()
     }
 
     override fun getNextTrackFromQueue(): QueueTrack? {
@@ -103,28 +98,38 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
             R.drawable.ic_play_arrow_24dp else R.drawable.ic_pause_24dp
         view?.findViewById<ImageButton>(R.id.play_pause_img_btn)?.setImageResource(imgRes)
 
+        loadAlbumCover()
+    }
+
+    private fun loadAlbumCover() {
+        val imageUri =
+            if (party.queue.isNotEmpty()) party.queue[0].track.album.images[0].url else null
+
         // update album cover
         if (context != null && view != null) {
             Glide.with(context!!)
-                .load(party.queue[0].track.album.images[0].url)
+                .load(imageUri)
                 .placeholder(R.drawable.ic_broken_image_48dp)
                 .into(view!!.findViewById(R.id.current_track_album_cover_img_view))
 
-            // Update background color to most dominant color in album cover
-            bitmap = Glide.with(context!!)
-                .asBitmap()
-                .load(party.queue[0].track.album.images[0].url)
-                .submit().get()
+            if (imageUri != null) {
+                // Update background color to most dominant color in album cover
+                // TODO: fix
+                /*val bitmap = Glide.with(context!!)
+                    .asBitmap()
+                    .load(imageUri)
+                    .submit().get()
 
-            palette = Palette.from(bitmap).generate()
+                val palette = Palette.from(bitmap).generate()
+
+                // Set color to most vibrant color -> else most dominant color -> else transparent
+                view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
+                    palette.getVibrantColor(
+                        palette.getDominantColor(0)
+                    )
+                )*/
+            }
         }
-
-        // Set color to most vibrant color -> else most dominant color -> else transparent
-        view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
-            palette.getVibrantColor(
-                palette.getDominantColor(0)
-            )
-        )
     }
 
     override fun onClick(v: View?) {
