@@ -184,12 +184,20 @@ public class PartyActivity extends AppCompatActivity
                 startActivity(searchTracksIntent);
                 break;
             case R.id.down_vote_btn:
-                // get track to vote from view tag
-                firebaseHelper.downvoteTrack(party, (QueueTrack) v.getTag(), attendee);
-                break;
             case R.id.up_vote_btn:
                 // get track to vote from view tag
-                firebaseHelper.upvoteTrack(party, (QueueTrack) v.getTag(), attendee);
+                QueueTrack track = (QueueTrack) v.getTag();
+                boolean voted = track.getDownvotes().contains(attendee)
+                        || track.getUpvotes().contains(attendee);
+                if (!voted) {
+                    if (v.getId() == R.id.down_vote_btn) {
+                        firebaseHelper.downvoteTrack(party, track, attendee);
+                    } else {
+                        firebaseHelper.upvoteTrack(party, track, attendee);
+                    }
+                } else {
+                    Toast.makeText(this, "You already voted on this track.", Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;

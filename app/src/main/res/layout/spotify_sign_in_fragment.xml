@@ -8,22 +8,21 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal|bottom"
     android:orientation="vertical"
-
     tools:context=".activities.MainActivity">
 
     <Button
         android:id="@+id/sign_in_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:text="@string/spotify_sign_in" />
 
     <ImageView
         android:id="@+id/user_profile_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginBottom="5dp"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <TextView

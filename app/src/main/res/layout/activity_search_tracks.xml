@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/gradient_bg"
-    tools:context=".activities.SearchTracksActivity"
-    android:paddingTop="10dp">
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    tools:context=".activities.SearchTracksActivity">
 
     <LinearLayout
-        android:paddingHorizontal="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
         android:gravity="fill_horizontal"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
 
         <EditText
             android:id="@+id/search_track_edit_txt"
@@ -28,11 +28,11 @@
 
         <Button
             android:id="@+id/search_btn"
-            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
             android:layout_weight=".1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="onClick"
             android:text="@string/search" />
     </LinearLayout>
 
@@ -40,7 +40,8 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingHorizontal="10dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp" />
 
 </LinearLayout>
