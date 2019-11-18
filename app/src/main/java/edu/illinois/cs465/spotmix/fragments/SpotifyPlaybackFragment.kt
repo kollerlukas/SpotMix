@@ -1,14 +1,21 @@
 package edu.illinois.cs465.spotmix.fragments
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.FutureTarget
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.spotify.protocol.types.PlayerState
 import edu.illinois.cs465.spotmix.R
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper
@@ -115,19 +122,34 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
             if (imageUri != null) {
                 // Update background color to most dominant color in album cover
                 // TODO: fix
-                /*val bitmap = Glide.with(context!!)
+                var bitmap : Bitmap? = null
+                Glide.with(context!!)
                     .asBitmap()
                     .load(imageUri)
-                    .submit().get()
+                    .into(object: CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            var palette = Palette.from(resource).generate()
 
-                val palette = Palette.from(bitmap).generate()
-
-                // Set color to most vibrant color -> else most dominant color -> else transparent
-                view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
-                    palette.getVibrantColor(
-                        palette.getDominantColor(0)
-                    )
-                )*/
+                            // Set color to most vibrant color -> else most dominant color -> else transparent
+                            view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
+                                palette.getVibrantColor(
+                                    palette.getDominantColor(0)
+                                )
+                            )
+                        }
+                        override fun onLoadStarted(placeholder: Drawable?) {
+//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+                        override fun onLoadFailed(errorDrawable: Drawable?) {
+//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+                        override fun onLoadCleared(placeholder: Drawable?) {
+//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+                    })
             }
         }
     }
