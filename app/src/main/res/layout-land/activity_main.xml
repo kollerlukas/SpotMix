@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--TODO: make layout nice-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="28dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/join_party_btn"
+            style="@style/ButtonStylePrimary"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:onClick="onClick"
+            android:text="@string/join_party" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/create_party_btn"
+                style="@style/ButtonStyleSecondary"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:onClick="onClick"
+                android:text="@string/create_party" />
+
+            <TextView
+                android:id="@+id/create_party_log_in_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/please_log_in_to_create_a_party"
+                android:textColor="@android:color/secondary_text_light" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <fragment
+        android:id="@+id/spotify_api_fragment"
+        android:name="edu.illinois.cs465.spotmix.api.spotify.SpotifyAuthApiFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+</LinearLayout>
