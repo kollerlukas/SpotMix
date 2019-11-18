@@ -1,7 +1,9 @@
 package edu.illinois.cs465.spotmix.fragments
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -132,13 +134,21 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                             transition: Transition<in Bitmap>?
                         ) {
                             var palette = Palette.from(resource).generate()
+                            var color1 = palette.getMutedColor(palette.getDominantColor(0))
 
-                            // Set color to most vibrant color -> else most dominant color -> else transparent
-                            view?.findViewById<LinearLayout>(R.id.album_background)?.setBackgroundColor(
-                                palette.getVibrantColor(
-                                    palette.getDominantColor(0)
+                            var gd : GradientDrawable = GradientDrawable(
+                                GradientDrawable.Orientation.TOP_BOTTOM,
+                                intArrayOf(
+                                    color1,
+                                    // Using R.color.colorPrimaryDark does not provide the correct color
+                                    Color.parseColor("#121212")
                                 )
                             )
+                            // Set color to most vibrant color -> else most dominant color -> else transparent
+                            view?.findViewById<LinearLayout>(R.id.album_background)?.setBackground(gd)
+
+
+
                         }
                         override fun onLoadStarted(placeholder: Drawable?) {
 //                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -12,31 +12,22 @@
     <LinearLayout
         android:id="@+id/album_background"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/gradient_fade"
-        android:gravity="center"
+        android:layout_height="225dp"
         android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
 
         <ImageView
             android:id="@+id/current_track_album_cover_img_view"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             tools:ignore="ContentDescription"
-            android:layout_centerInParent="true"/>
-        <View
-            android:background="@drawable/gradient_fade"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        </RelativeLayout>
+            android:layout_marginTop="20dp"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center"
         android:background="#121212"
         android:orientation="horizontal"
         android:paddingStart="10dp"
