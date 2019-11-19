@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.FutureTarget
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.spotify.protocol.types.PlayerState
