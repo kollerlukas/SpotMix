@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--TODO: make look nice-->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <TextView
         android:id="@+id/attendee_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/admin_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/admin"
+        android:textColor="@android:color/secondary_text_dark"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/co_admin_swtch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/co_admin"
+            android:textColor="@android:color/secondary_text_dark" />
+    </LinearLayout>
 </LinearLayout>
