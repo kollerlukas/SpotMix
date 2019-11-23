@@ -9,29 +9,37 @@
     android:orientation="vertical"
     tools:context=".activities.PartyActivity">
 
-    <LinearLayout
-        android:id="@+id/album_background"
+    <ImageView
+        android:id="@+id/current_track_album_cover_img_view"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:orientation="horizontal">
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/current_track_album_cover_img_view"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            tools:ignore="ContentDescription"
-            android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/track_title_txt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/artist_name_txt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@android:color/secondary_text_dark" />
 
     <LinearLayout
+        android:id="@+id/playback_ctrls"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:background="#121212"
         android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp">
 
         <ImageButton
             android:id="@+id/prev_track_img_btn"

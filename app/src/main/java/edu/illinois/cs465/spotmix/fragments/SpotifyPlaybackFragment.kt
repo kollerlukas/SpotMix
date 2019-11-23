@@ -2,6 +2,7 @@ package edu.illinois.cs465.spotmix.fragments
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -11,7 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -55,14 +58,10 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
         super.onStart()
         if (attendee.admin) {
             // set visibility to gone
-            view?.prev_track_img_btn?.visibility = View.VISIBLE
-            view?.play_pause_img_btn?.visibility = View.VISIBLE
-            view?.next_track_img_btn?.visibility = View.VISIBLE
+            view?.playback_ctrls?.visibility = View.VISIBLE
         } else {
             // set visibility to gone
-            view?.prev_track_img_btn?.visibility = View.GONE
-            view?.play_pause_img_btn?.visibility = View.GONE
-            view?.next_track_img_btn?.visibility = View.GONE
+            view?.playback_ctrls?.visibility = View.GONE
         }
         // get notified when party state changes
         firebaseHelper.addPartyListener(party, this)
@@ -112,9 +111,17 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
     private fun loadAlbumCover() {
         val imageUri =
             if (party.queue.isNotEmpty()) party.queue[0].track.album.images[0].url else null
+        val trackTitle = if (party.queue.isNotEmpty()) party.queue[0].track.name else null
+        val trackArists =
+            if (party.queue.isNotEmpty()) party.queue[0].track.getArtistNames() else null
 
         // update album cover
         if (context != null && view != null) {
+
+            // set current track title and artist
+            view!!.findViewById<TextView>(R.id.track_title_txt_view).text = trackTitle
+            view!!.findViewById<TextView>(R.id.artist_name_txt_view).text = trackArists
+
             Glide.with(context!!)
                 .load(imageUri)
                 .placeholder(R.drawable.ic_broken_image_48dp)
@@ -122,20 +129,18 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
             if (imageUri != null) {
                 // Update background color to most dominant color in album cover
-                // TODO: fix
-                var bitmap : Bitmap? = null
                 Glide.with(context!!)
                     .asBitmap()
                     .load(imageUri)
-                    .into(object: CustomTarget<Bitmap>() {
+                    .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(
                             resource: Bitmap,
                             transition: Transition<in Bitmap>?
                         ) {
-                            var palette = Palette.from(resource).generate()
-                            var color1 = palette.getMutedColor(palette.getDominantColor(0))
+                            val palette = Palette.from(resource).generate()
+                            val color1 = palette.getMutedColor(palette.getDominantColor(0))
 
-                            var gd : GradientDrawable = GradientDrawable(
+                            val gd = GradientDrawable(
                                 GradientDrawable.Orientation.TOP_BOTTOM,
                                 intArrayOf(
                                     color1,
@@ -144,20 +149,13 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                                 )
                             )
                             // Set color to most vibrant color -> else most dominant color -> else transparent
-                            view?.findViewById<LinearLayout>(R.id.album_background)?.setBackground(gd)
+                            view?.findViewById<LinearLayout>(R.id.spotify_play_back_fragment)
+                                ?.background = gd
+                        }
 
-
-
-                        }
-                        override fun onLoadStarted(placeholder: Drawable?) {
-//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
-                        override fun onLoadFailed(errorDrawable: Drawable?) {
-//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
-                        override fun onLoadCleared(placeholder: Drawable?) {
-//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
+                        override fun onLoadStarted(placeholder: Drawable?) {}
+                        override fun onLoadFailed(errorDrawable: Drawable?) {}
+                        override fun onLoadCleared(placeholder: Drawable?) {}
                     })
             }
         }
