@@ -4,15 +4,16 @@
     android:id="@+id/spotify_play_back_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/gradient_bg"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.PartyActivity">
 
     <LinearLayout
+        android:paddingTop="50dp"
         android:id="@+id/album_background"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="260dp"
         android:orientation="horizontal">
 
         <ImageView

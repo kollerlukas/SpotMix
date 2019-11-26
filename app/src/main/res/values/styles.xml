@@ -3,12 +3,13 @@
     <!-- Base application theme. -->
     <style name="SpotMix.Theme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:navigationBarColor">#000000</item>
         <item name="android:fontFamily">@font/montserrat</item>
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
     <style name="SpotMix.Theme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
