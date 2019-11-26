@@ -8,6 +8,10 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:paddingStart="25dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="50dp"
+    android:background="@drawable/gradient_bg"
     tools:context=".activities.JoinPartyActivity">
 
     <RelativeLayout
@@ -20,13 +24,14 @@
             android:layout_height="wrap_content"
             android:text="Scan QR Code to join party"
             android:textAlignment="center"
+            android:layout_above="@id/qrCode"
             android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/qrCode"
             android:layout_width="wrap_content"
             android:layout_height="350dp"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/qr_code" />
     </RelativeLayout>
 
@@ -34,20 +39,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/party_code_edit_txt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:hint="Enter Party Code Here!" />
+            android:textAlignment="center"
+            android:layout_marginBottom="35dp"
+            android:hint="Enter Party Code" />
 
         <Button
             android:id="@+id/join_btn"
-            android:layout_width="wrap_content"
+            style="@style/ButtonStylePrimary"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:text="Join" />
