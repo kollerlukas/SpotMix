@@ -25,7 +25,7 @@
             android:text="Scan QR Code to join party"
             android:textAlignment="center"
             android:layout_above="@id/qrCodeScanner"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
             android:textSize="20sp" />
 
         <SurfaceView
@@ -33,6 +33,13 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/qrCode"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_qr_scanner_24dp" />
     </RelativeLayout>
 
     <LinearLayout
