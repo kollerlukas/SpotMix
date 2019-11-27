@@ -1,17 +1,33 @@
 package edu.illinois.cs465.spotmix.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import java.io.IOException;
 
 import edu.illinois.cs465.spotmix.R;
 import edu.illinois.cs465.spotmix.api.firebase.FirebaseHelper;
@@ -19,12 +35,80 @@ import edu.illinois.cs465.spotmix.api.firebase.models.Attendee;
 import edu.illinois.cs465.spotmix.api.firebase.models.Party;
 
 public class JoinPartyActivity extends AppCompatActivity
-        implements View.OnClickListener, FirebaseHelper.JoinCallback {
+        implements View.OnClickListener, FirebaseHelper.JoinCallback{
+    BarcodeDetector barcodeDetector;
+    CameraSource cameraSource;
+
+    // Used to prevent multiple scans/popups
+    boolean qrCodeScanned = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_party);
+
+        EditText editText = findViewById(R.id.party_code_edit_txt);
+
+        Button joinPartyBtn = findViewById(R.id.join_btn);
+
+        SurfaceView surfaceView = findViewById(R.id.qrCodeScanner);
+
+        barcodeDetector = new BarcodeDetector.Builder(JoinPartyActivity.this)
+                .setBarcodeFormats(Barcode.QR_CODE).build();
+
+        if (!barcodeDetector.isOperational()) {
+            Toast.makeText(JoinPartyActivity.this, "Could not set up the detector!", Toast.LENGTH_SHORT).show();
+        }
+
+        cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(640, 480).build();
+
+        ActivityCompat.requestPermissions(JoinPartyActivity.this, new String[]{Manifest.permission.CAMERA}, 50);
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                try {
+                    cameraSource.start(surfaceView.getHolder());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+                cameraSource.stop();
+            }
+        });
+
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            @Override
+            public void release() {
+
+            }
+
+            @Override
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                SparseArray<Barcode> qrCodes = detections.getDetectedItems();
+
+                if (qrCodes.size() != 0) {
+                    if (!qrCodeScanned) {
+                        qrCodeScanned = true;
+                        editText.post(() -> {
+                            editText.setText(qrCodes.valueAt(0).displayValue);
+                            joinPartyBtn.post(joinPartyBtn::performClick);
+                        });
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -78,6 +162,9 @@ public class JoinPartyActivity extends AppCompatActivity
         } else {
             // TODO: error handling
             Toast.makeText(this, "Some error...", Toast.LENGTH_SHORT).show();
+
+            // In case qrCodeScanner scanned an invalid QR Code, reset qrCodeScanned so we can scan again
+            qrCodeScanned = false;
         }
     }
 }
