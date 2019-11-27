@@ -4,7 +4,6 @@
     android:id="@+id/spotify_play_back_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient_bg"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.PartyActivity">
