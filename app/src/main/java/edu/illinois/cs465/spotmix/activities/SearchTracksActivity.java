@@ -1,5 +1,6 @@
 package edu.illinois.cs465.spotmix.activities;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -132,6 +133,9 @@ public class SearchTracksActivity extends AppCompatActivity
                 // get track to add from view tag
                 Track track = (Track) v.getTag();
                 if (!party.isTrackInQueue(track)) {
+                    // run animation
+                    AnimatedVectorDrawable addToCheck = (AnimatedVectorDrawable) ((ImageButton) v).getDrawable();
+                    addToCheck.start();
                     // add track to queue
                     firebaseHelper.addTrackToQueue(party, track, this);
                 } else {
@@ -184,7 +188,7 @@ public class SearchTracksActivity extends AppCompatActivity
 
     }
 
-    private static class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
+    private class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
 
         private List<Track> tracks = new LinkedList<>();
 
@@ -216,7 +220,7 @@ public class SearchTracksActivity extends AppCompatActivity
             return tracks.get(position).getId().hashCode();
         }
 
-        private static class TrackHolder extends RecyclerView.ViewHolder {
+        private class TrackHolder extends RecyclerView.ViewHolder {
 
             TrackHolder(@NonNull View itemView) {
                 super(itemView);
@@ -241,6 +245,12 @@ public class SearchTracksActivity extends AppCompatActivity
                 ImageButton addToQueueBtn = itemView.findViewById(R.id.add_track_to_queue_btn);
                 // set tag to Image button, to know which track to add
                 addToQueueBtn.setTag(track);
+
+                if (party.isTrackInQueue(track)) {
+                    addToQueueBtn.setImageResource(R.drawable.ic_check_24dp);
+                } else {
+                    addToQueueBtn.setImageResource(R.drawable.add_to_check_avd);
+                }
             }
         }
     }

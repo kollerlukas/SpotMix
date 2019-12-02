@@ -1,0 +1,134 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:name="cross_hor"
+                android:pathData="M 5 12 L 19 12"
+                android:strokeWidth="2"
+                android:strokeColor="#fff" />
+            <path
+                android:name="check_short"
+                android:pathData="M 4.12 12.705 L 9.71 18.295"
+                android:strokeWidth="2"
+                android:strokeColor="#fff"
+                android:trimPathEnd="0" />
+            <path
+                android:name="cross_hor_to_check_short"
+                android:pathData="M 19 12 C 21.761 12 24 9.761 24 7 C 24 4.239 21.761 2 19 2 C 18.503 2 18.024 2.072 17.571 2.207 L 5.374 6.179 C 4.906 6.374 4.467 6.662 4.087 7.043 C 2.524 8.605 2.524 11.138 4.087 12.7"
+                android:strokeWidth="2"
+                android:strokeColor="#fff"
+                android:trimPathEnd="0" />
+            <path
+                android:name="cross_vert_to_check_long"
+                android:pathData="M 12 19 C 12 20.105 11.105 21 10 21 C 8.895 21 8 20.105 8 19 C 8 18.706 8.101 18.463 8.295 18.295"
+                android:strokeWidth="2"
+                android:strokeColor="#fff"
+                android:trimPathEnd="0" />
+            <path
+                android:name="cross_vert"
+                android:pathData="M 12 5 L 12 19"
+                android:strokeWidth="2"
+                android:strokeColor="#fff" />
+            <path
+                android:name="check_long"
+                android:pathData="M 8.295 18.295 L 20.295 6.295"
+                android:strokeWidth="2"
+                android:strokeColor="#fff"
+                android:trimPathEnd="0" />
+        </vector>
+    </aapt:attr>
+    <target android:name="cross_hor">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="50"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="trimPathStart"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+    <target android:name="cross_hor_to_check_short">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="150"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="150"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="trimPathStart"
+                    android:startOffset="50"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="cross_vert_to_check_long">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="150"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="trimPathStart"
+                    android:startOffset="100"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="cross_vert">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="100"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="trimPathStart"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+    <target android:name="check_long">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="150"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="trimPathEnd"
+                android:startOffset="150"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+    <target android:name="check_short">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="150"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="trimPathEnd"
+                android:startOffset="150"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+</animated-vector>

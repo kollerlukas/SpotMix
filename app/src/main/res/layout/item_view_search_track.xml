@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="onClick"
-        android:src="@drawable/ic_add_black_24dp"
+        android:src="@drawable/add_to_check_avd"
         tools:ignore="ContentDescription" />
 
 </LinearLayout>
