@@ -72,6 +72,9 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'androidx.palette:palette:1.0.0'
+
+    // swiping votes implementations easier
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

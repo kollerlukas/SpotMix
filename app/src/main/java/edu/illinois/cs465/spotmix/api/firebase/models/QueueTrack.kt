@@ -17,4 +17,10 @@ data class QueueTrack @JvmOverloads constructor(
     // used to reconstruct obj when reading from Firebase
     @Suppress("unused")
     constructor() : this(Track())
+
+    fun hasVoted(attendee: Attendee) = hasDownVoted(attendee) || hasUpVoted(attendee)
+
+    fun hasUpVoted(attendee: Attendee) = upvotes.contains(attendee)
+
+    fun hasDownVoted(attendee: Attendee) = downvotes.contains(attendee)
 }

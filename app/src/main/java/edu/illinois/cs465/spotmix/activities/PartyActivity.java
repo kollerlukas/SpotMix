@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,9 +34,10 @@ import edu.illinois.cs465.spotmix.api.firebase.models.Party;
 import edu.illinois.cs465.spotmix.api.firebase.models.QueueTrack;
 import edu.illinois.cs465.spotmix.api.spotify.SpotifyHelper;
 import edu.illinois.cs465.spotmix.fragments.SpotifyPlaybackFragment;
+import edu.illinois.cs465.spotmix.util.SwipeToVoteCallback;
 
 public class PartyActivity extends AppCompatActivity
-        implements View.OnClickListener, FirebaseHelper.PartyListener {
+        implements View.OnClickListener, FirebaseHelper.PartyListener, SwipeToVoteCallback.PartyCallback {
 
     // instance of a party to display
     private Party party;
@@ -95,10 +96,20 @@ public class PartyActivity extends AppCompatActivity
         // find recyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         // set a LayoutManager
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                // to enable animations even when calling notifyDataSetChanged()
+                return true;
+            }
+        });
         // set an Adapter
         rvAdapter = new QueueAdapter(attendee);
+        rvAdapter.setHasStableIds(true);
         recyclerView.setAdapter(rvAdapter);
+        // add item touch helper to make swiping work
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToVoteCallback(rvAdapter, this, this));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -133,7 +144,6 @@ public class PartyActivity extends AppCompatActivity
     public void onPartyChanged(@NotNull Party party) {
         this.party = party;
 
-        // TODO: better impl
         rvAdapter.setQueue(party.getQueue());
         rvAdapter.notifyDataSetChanged();
     }
@@ -183,7 +193,7 @@ public class PartyActivity extends AppCompatActivity
                 // start search Track activity
                 startActivity(searchTracksIntent);
                 break;
-            case R.id.down_vote_btn:
+            /*case R.id.down_vote_btn:
             case R.id.up_vote_btn:
                 // get track to vote from view tag
                 QueueTrack track = (QueueTrack) v.getTag();
@@ -198,13 +208,19 @@ public class PartyActivity extends AppCompatActivity
                 } else {
                     Toast.makeText(this, "You already voted on this track.", Toast.LENGTH_SHORT).show();
                 }
-                break;
+                break;*/
             default:
                 break;
         }
     }
 
-    private static class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueHolder> {
+    @NotNull
+    @Override
+    public Party getParty() {
+        return party;
+    }
+
+    public static class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueHolder> {
 
         private Attendee attendee;
 
@@ -230,7 +246,7 @@ public class PartyActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(@NonNull QueueHolder holder, int position) {
-            holder.bind(queue.get(position), attendee);
+            holder.bind(queue.get(position));
         }
 
         @Override
@@ -238,13 +254,26 @@ public class PartyActivity extends AppCompatActivity
             return queue.size();
         }
 
-        private static class QueueHolder extends RecyclerView.ViewHolder {
+        public List<QueueTrack> getQueue() {
+            return queue;
+        }
+
+        public Attendee getAttendee() {
+            return attendee;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return queue.get(position).getTrack().getId().hashCode();
+        }
+
+        static class QueueHolder extends RecyclerView.ViewHolder {
 
             QueueHolder(@NonNull View itemView) {
                 super(itemView);
             }
 
-            void bind(QueueTrack track, Attendee attendee) {
+            void bind(QueueTrack track) {
                 TextView trackTitleTxtView = itemView.findViewById(R.id.track_title_txt_view);
                 // set track title
                 trackTitleTxtView.setText(track.getTrack().getName());
@@ -259,19 +288,6 @@ public class PartyActivity extends AppCompatActivity
                         .load(track.getTrack().getAlbum().getImages().get(0).getUrl())
                         .placeholder(R.drawable.ic_broken_image_48dp)
                         .into(albumCoverImgView);
-
-                boolean voted = track.getDownvotes().contains(attendee)
-                        || track.getUpvotes().contains(attendee);
-
-                ImageButton upVoteBtn = itemView.findViewById(R.id.up_vote_btn);
-                //upVoteBtn.setEnabled(!voted);
-                // set tag to Image button, to know which track to vote
-                upVoteBtn.setTag(track);
-
-                ImageButton downVoteBtn = itemView.findViewById(R.id.down_vote_btn);
-                //downVoteBtn.setEnabled(!voted);
-                // set tag to Image button, to know which track to vote
-                downVoteBtn.setTag(track);
             }
         }
     }

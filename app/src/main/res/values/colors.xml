@@ -3,4 +3,7 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#121212</color>
     <color name="colorAccent">#1DB954</color>
+
+    <color name="up_vote_bg_clr">#324CAF50</color>
+    <color name="down_vote_bg_clr">#32F44336</color>
 </resources>
