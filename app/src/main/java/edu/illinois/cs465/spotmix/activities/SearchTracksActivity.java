@@ -86,9 +86,15 @@ public class SearchTracksActivity extends AppCompatActivity
         // find recyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         // set a LayoutManager
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return true;
+            }
+        });
         // set an Adapter
         rvAdapter = new TrackAdapter();
+        rvAdapter.setHasStableIds(true);
         recyclerView.setAdapter(rvAdapter);
     }
 
@@ -203,6 +209,11 @@ public class SearchTracksActivity extends AppCompatActivity
         @Override
         public int getItemCount() {
             return tracks.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return tracks.get(position).getId().hashCode();
         }
 
         private static class TrackHolder extends RecyclerView.ViewHolder {

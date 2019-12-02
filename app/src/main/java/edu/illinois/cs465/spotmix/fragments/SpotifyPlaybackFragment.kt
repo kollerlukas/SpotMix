@@ -6,9 +6,7 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -102,6 +100,12 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
         this.party = party
         // reload album cover
         loadAlbumCover()
+        // update player; in case co-admin paused
+        if (party.playing) {
+            spotifyHelper?.play()
+        } else {
+            spotifyHelper?.pause()
+        }
     }
 
     override fun getNextTrackFromQueue(): QueueTrack? {
@@ -121,9 +125,15 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
         }
 
         // update play-pause button icon
-        val imgRes = if (state.isPaused)
+        /*val imgRes = if (state.isPaused)
             R.drawable.ic_play_arrow_24dp else R.drawable.ic_pause_24dp
-        view?.findViewById<ImageButton>(R.id.play_pause_img_btn)?.setImageResource(imgRes)
+        view?.findViewById<ImageButton>(R.id.play_pause_img_btn)?.setImageResource(imgRes)*/
+
+        // change icon
+        val imgRes = if (state.isPaused)
+            R.drawable.play_pause_avd else R.drawable.pause_play_avd
+        val playPauseBtn = view?.findViewById<ImageButton>(R.id.play_pause_img_btn)
+        playPauseBtn?.setImageResource(imgRes)
 
         loadAlbumCover()
     }
@@ -186,11 +196,21 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                 Toast.makeText(context, "TODO", Toast.LENGTH_SHORT).show()
             }
             R.id.play_pause_img_btn -> {
-                if (party.playing) {
-                    spotifyHelper?.pause()
-                } else {
-                    spotifyHelper?.play()
-                }
+                // run animation
+                val playPauseBtn = view?.findViewById<ImageButton>(R.id.play_pause_img_btn)
+                val playPauseAvd = (playPauseBtn?.drawable as AnimatedVectorDrawable)
+                playPauseAvd.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                    override fun onAnimationEnd(drawable: Drawable?) {
+                        super.onAnimationEnd(drawable)
+                        // change player state
+                        if (party.playing) {
+                            spotifyHelper?.pause()
+                        } else {
+                            spotifyHelper?.play()
+                        }
+                    }
+                })
+                playPauseAvd.start()
             }
             R.id.next_track_img_btn -> {
                 // TODO: implement

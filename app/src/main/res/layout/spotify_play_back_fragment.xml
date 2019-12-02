@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_play_arrow_24dp"
+            android:src="@drawable/play_pause_avd"
             tools:ignore="ContentDescription" />
 
         <ImageButton
