@@ -4,6 +4,7 @@
     package="edu.illinois.cs465.spotmix">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"

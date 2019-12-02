@@ -75,6 +75,8 @@ dependencies {
 
     // swiping votes implementations easier
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
+    
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

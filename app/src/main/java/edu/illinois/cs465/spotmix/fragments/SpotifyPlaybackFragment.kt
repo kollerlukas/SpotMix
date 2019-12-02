@@ -1,5 +1,9 @@
 package edu.illinois.cs465.spotmix.fragments
 
+import android.animation.Animator
+import android.animation.ArgbEvaluator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,6 +19,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -40,6 +46,15 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
     val firebaseHelper: FirebaseHelper = FirebaseHelper()
 
+    var previousGradient: IntArray = intArrayOf(
+        Color.parseColor("#212121"),
+        Color.parseColor("#121212")
+    )
+
+    var animator: Animator? = null
+
+    var gd: GradientDrawable? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,6 +71,11 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
 
     override fun onStart() {
         super.onStart()
+
+        gd = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, previousGradient)
+        view?.findViewById<LinearLayout>(R.id.album_background)?.background = gd
+
+
         if (attendee.admin) {
             // set visibility to gone
             view?.playback_ctrls?.visibility = View.VISIBLE
@@ -140,8 +160,7 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                             val palette = Palette.from(resource).generate()
                             val color1 = palette.getMutedColor(palette.getDominantColor(0))
 
-                            val gd = GradientDrawable(
-                                GradientDrawable.Orientation.TOP_BOTTOM,
+                            animateGradient(
                                 intArrayOf(
                                     color1,
                                     // Using R.color.colorPrimaryDark does not provide the correct color
@@ -149,8 +168,7 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                                 )
                             )
                             // Set color to most vibrant color -> else most dominant color -> else transparent
-                            view?.findViewById<LinearLayout>(R.id.spotify_play_back_fragment)
-                                ?.background = gd
+                            view?.findViewById<LinearLayout>(R.id.album_background)?.background = gd
                         }
 
                         override fun onLoadStarted(placeholder: Drawable?) {}
@@ -179,5 +197,32 @@ class SpotifyPlaybackFragment : Fragment(), View.OnClickListener, FirebaseHelper
                 Toast.makeText(context, "TODO", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun animateGradient(targetColors: IntArray) {
+        val from = previousGradient
+        require(from.size == targetColors.size)
+        animator?.cancel()
+        val arraySize = from.size
+        val props = Array<PropertyValuesHolder>(arraySize) {
+            PropertyValuesHolder.ofObject(
+                it.toString(),
+                ArgbEvaluator(),
+                from[it],
+                targetColors[it]
+            )
+        }
+        val anim = ValueAnimator.ofPropertyValuesHolder(*props)
+        anim.addUpdateListener { valueAnim ->
+            IntArray(arraySize) { i ->
+                valueAnim.getAnimatedValue(i.toString()) as Int
+            }.let {
+                previousGradient = it
+                gd?.colors = it
+            }
+        }
+        anim.duration = 500
+        anim.start()
+        animator = anim
     }
 }

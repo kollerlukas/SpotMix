@@ -4,17 +4,25 @@
     android:id="@+id/spotify_play_back_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.PartyActivity">
 
-    <ImageView
-        android:id="@+id/current_track_album_cover_img_view"
+    <LinearLayout
+        android:id="@+id/album_background"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
-        tools:ignore="ContentDescription" />
+        android:layout_height="260dp"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
+
+        <ImageView
+            android:id="@+id/current_track_album_cover_img_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/track_title_txt_view"
