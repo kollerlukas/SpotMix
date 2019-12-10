@@ -1,14 +1,10 @@
 package edu.illinois.cs465.spotmix.activities;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.text.InputType;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,15 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
@@ -127,15 +123,12 @@ public class JoinPartyActivity extends AppCompatActivity
                 new AlertDialog.Builder(this)
                         .setMessage("Enter your name:")
                         .setView(nameEditText)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // get name from dialog text
-                                String attendeeName = nameEditText.getText().toString();
-                                // request to join a party
-                                new FirebaseHelper().joinParty(partyCode, attendeeName,
-                                        JoinPartyActivity.this);
-                            }
+                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                            // get name from dialog text
+                            String attendeeName = nameEditText.getText().toString();
+                            // request to join a party
+                            new FirebaseHelper().joinParty(partyCode, attendeeName,
+                                    JoinPartyActivity.this);
                         })
                         // listener null, because just dismissing the dialog, doing nothing else
                         .setNegativeButton(R.string.cancel, null)

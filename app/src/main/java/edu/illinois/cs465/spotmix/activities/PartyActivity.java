@@ -174,6 +174,7 @@ public class PartyActivity extends AppCompatActivity
                 Intent attendeeIntent = new Intent(this, AttendeesActivity.class);
                 // pass party instance to attendee activity
                 attendeeIntent.putExtra(Party.PARCEL_KEY, party);
+                attendeeIntent.putExtra(Attendee.PARCEL_KEY, attendee);
                 // start Attendee Activity
                 startActivity(attendeeIntent);
                 return true;

@@ -27,4 +27,5 @@
     <string name="track_already_in_queue">Track is already in the queue.</string>
 
     <string name="co_admin">Co-Admin</string>
+    <string name="search_attendees">Search Attendees</string>
 </resources>

@@ -32,6 +32,9 @@ public class AttendeesActivity extends AppCompatActivity
     // instance of a party to display attendees
     private Party party;
 
+    // instance of Attendee resembled by the user
+    private Attendee attendee;
+
     private FirebaseHelper firebaseHelper;
 
     private AttendeeAdapter rvAdapter;
@@ -50,9 +53,12 @@ public class AttendeesActivity extends AppCompatActivity
         if (savedInstanceState != null) {
             // restore state
             party = savedInstanceState.getParcelable(Party.PARCEL_KEY);
+            attendee = savedInstanceState.getParcelable(Attendee.PARCEL_KEY);
         } else {
             // extract party instance from intent
             party = getIntent().getParcelableExtra(Party.PARCEL_KEY);
+            // extract attendee instance
+            attendee = getIntent().getParcelableExtra(Attendee.PARCEL_KEY);
         }
 
 
@@ -93,8 +99,9 @@ public class AttendeesActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        // save state
+        // save party and attendee
         outState.putParcelable(Party.PARCEL_KEY, party);
+        outState.putParcelable(Attendee.PARCEL_KEY, attendee);
     }
 
     @Override
@@ -139,6 +146,9 @@ public class AttendeesActivity extends AppCompatActivity
     @Override
     public void onAttendeeChanged(@NotNull List<Attendee> attendees, int position) {
         Log.d("AttendeeActivity", "onAttendeeChanged() called with: attendees = [" + attendees + "], position = [" + position + "]");
+        if (position == party.getAttendees().indexOf(attendee)) {
+            attendee = attendees.get(position);
+        }
         rvAdapter.setAttendees(attendees);
         rvAdapter.notifyItemChanged(position);
     }
@@ -150,7 +160,7 @@ public class AttendeesActivity extends AppCompatActivity
         rvAdapter.notifyDataSetChanged();
     }
 
-    private static class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.AttendeeHolder> {
+    private class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.AttendeeHolder> {
 
         private List<Attendee> attendees;
 
@@ -183,7 +193,7 @@ public class AttendeesActivity extends AppCompatActivity
             return attendees.size();
         }
 
-        private static class AttendeeHolder extends RecyclerView.ViewHolder {
+        private class AttendeeHolder extends RecyclerView.ViewHolder {
 
             AttendeeHolder(@NonNull View itemView) {
                 super(itemView);
@@ -197,6 +207,9 @@ public class AttendeesActivity extends AppCompatActivity
 
                 itemView.findViewById(R.id.admin_indicator)
                         .setVisibility(attendee.getAdmin() ? View.VISIBLE : View.GONE);
+
+                itemView.findViewById(R.id.co_admin_layout)
+                        .setVisibility(AttendeesActivity.this.attendee.getAdmin() ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }
